@@ -250,7 +250,7 @@ namespace productsAPIClient
 
         #endregion
 
-        private System.Windows.Forms.TextBox txtUrl;
+        private System.Windows.Forms.TextBox txtUrl; 
         private System.Windows.Forms.TextBox txtResponse;
         private System.Windows.Forms.Button cmdSend;
         private System.Windows.Forms.Label label1;
