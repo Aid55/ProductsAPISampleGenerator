@@ -20,7 +20,7 @@ namespace productsAPIClient
 
         private void cmdSend_Click(object sender, EventArgs e)
         {
-            RestClient rClient = new RestClient();
+            RestClient rClient = new RestClient(); 
             rClient.endPoint = txtUrl.Text;
             txtResponse.Text = string.Empty;
             debugOutput("Rest client created");
