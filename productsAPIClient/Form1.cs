@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 
 namespace productsAPIClient
 {
+
     public partial class Form1 : Form
     {
         public Form1()
@@ -18,14 +19,21 @@ namespace productsAPIClient
             InitializeComponent();
         }
 
-        private void cmdSend_Click(object sender, EventArgs e)
+        private void sendRequest(string url)
         {
-            RestClient rClient = new RestClient(); 
-            rClient.endPoint = txtUrl.Text;
+            RestClient rClient = new RestClient();
+            rClient.endPoint = url;
             txtResponse.Text = string.Empty;
             debugOutput("Rest client created");
             string strResponse = string.Empty;
-            strResponse = rClient.makeRequest(txtAqKeyName.Text.ToString(),txtAqKeyValue.Text.ToString());
+            if (ClientConfig.apiKeyName == string.Empty || ClientConfig.apiKeyValue == string.Empty)
+            {
+                strResponse = rClient.makeRequest(txtAqKeyName.Text.ToString(), txtAqKeyValue.Text.ToString());
+            }
+            else
+            {
+                strResponse = rClient.makeRequest(ClientConfig.apiKeyName, ClientConfig.apiKeyValue);
+            }
             deserializeJson(strResponse);
         }
 
@@ -42,6 +50,19 @@ namespace productsAPIClient
             }
         }
 
+        private void serializeJson(Object jsonObject)
+        {
+            try
+            {
+                string jsonString = JsonConvert.SerializeObject(jsonObject);
+                debugOutput(jsonString);
+            }
+            catch (Exception ex)
+            {
+                debugOutput("Serialization problem" + ex.Message.ToString());
+            }
+        }
+
         private void debugOutput(string strDebugText)
         {
             System.Diagnostics.Debug.Write(strDebugText + Environment.NewLine);
@@ -50,17 +71,23 @@ namespace productsAPIClient
 
         private void cmdMfrBillingInfo_Click(object sender, EventArgs e)
         {
-            txtUrl.Text = "https://api.aq-fes.com/products-api/billing/manufacturers";
+            sendRequest(ClientConfig.billingUrl);
         }
 
         private void cmdMfrProducts_Click(object sender, EventArgs e)
         {
-            txtUrl.Text = "https://api.aq-fes.com/products-api/manufacturers/" + txtMfrId.Text + "/products";
+            sendRequest(ClientConfig.mfrProdsUrl + txtMfrId.Text + "/products");
         }
 
         private void cmdProduct_Click(object sender, EventArgs e)
         {
-            txtUrl.Text = "https://api.aq-fes.com/products-api/products/" + txtProdId.Text;
+            sendRequest(ClientConfig.prodUrl + txtProdId.Text);
         }
+
+        private void cmdJsonExport_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.ShowDialog();
+        }
+
     }
 }
