@@ -46,7 +46,7 @@ namespace productsAPIClient
             this.label6 = new System.Windows.Forms.Label();
             this.txtProdId = new System.Windows.Forms.TextBox();
             this.cmdJsonExport = new System.Windows.Forms.Button();
-            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.label7 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -66,7 +66,7 @@ namespace productsAPIClient
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(41, 188);
+            this.label2.Location = new System.Drawing.Point(37, 190);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(57, 15);
             this.label2.TabIndex = 4;
@@ -167,6 +167,7 @@ namespace productsAPIClient
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.cmdProduct);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.txtProdId);
@@ -210,20 +211,22 @@ namespace productsAPIClient
             // 
             // cmdJsonExport
             // 
-            this.cmdJsonExport.Location = new System.Drawing.Point(37, 281);
+            this.cmdJsonExport.Location = new System.Drawing.Point(16, 333);
             this.cmdJsonExport.Name = "cmdJsonExport";
-            this.cmdJsonExport.Size = new System.Drawing.Size(77, 39);
+            this.cmdJsonExport.Size = new System.Drawing.Size(104, 39);
             this.cmdJsonExport.TabIndex = 14;
-            this.cmdJsonExport.Text = "Export to JSON file";
+            this.cmdJsonExport.Text = "Export response to JSON file";
             this.cmdJsonExport.UseVisualStyleBackColor = true;
             this.cmdJsonExport.Click += new System.EventHandler(this.cmdJsonExport_Click);
             // 
-            // saveFileDialog1
+            // label7
             // 
-            this.saveFileDialog1.DefaultExt = "json";
-            this.saveFileDialog1.Filter = "json files (*.json)|*.json|All files (*.*)|*.*";
-            this.saveFileDialog1.InitialDirectory = "C:\\Users\\AidanBatchelor\\OneDrive - AUTOQUOTES,LLC\\Desktop";
-            this.saveFileDialog1.Title = "Save JSON file";
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(92, 25);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(177, 15);
+            this.label7.TabIndex = 22;
+            this.label7.Text = "No GUID needed for this request";
             // 
             // Form1
             // 
@@ -264,7 +267,7 @@ namespace productsAPIClient
         private System.Windows.Forms.TextBox txtProdId;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button cmdJsonExport;
-        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.Label label7;
     }
 }
 
