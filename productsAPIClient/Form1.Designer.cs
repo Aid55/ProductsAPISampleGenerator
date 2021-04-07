@@ -136,7 +136,7 @@ namespace productsAPIClient
             this.cmdMfrBillingInfo.TabIndex = 15;
             this.cmdMfrBillingInfo.Text = "GET Mfr Billing Info";
             this.cmdMfrBillingInfo.UseVisualStyleBackColor = true;
-            this.cmdMfrBillingInfo.Click += new System.EventHandler(this.cmdMfrBillingInfo_Click);
+            this.cmdMfrBillingInfo.Click += new System.EventHandler(this.CmdMfrBillingInfo_Click);
             // 
             // cmdMfrProducts
             // 
@@ -146,7 +146,7 @@ namespace productsAPIClient
             this.cmdMfrProducts.TabIndex = 16;
             this.cmdMfrProducts.Text = "GET Mfr Products";
             this.cmdMfrProducts.UseVisualStyleBackColor = true;
-            this.cmdMfrProducts.Click += new System.EventHandler(this.cmdMfrProducts_Click);
+            this.cmdMfrProducts.Click += new System.EventHandler(this.CmdMfrProducts_Click);
             // 
             // txtMfrId
             // 
@@ -190,7 +190,7 @@ namespace productsAPIClient
             this.cmdProduct.TabIndex = 21;
             this.cmdProduct.Text = "GET Product";
             this.cmdProduct.UseVisualStyleBackColor = true;
-            this.cmdProduct.Click += new System.EventHandler(this.cmdProduct_Click);
+            this.cmdProduct.Click += new System.EventHandler(this.CmdProduct_Click);
             // 
             // label6
             // 
@@ -217,7 +217,7 @@ namespace productsAPIClient
             this.cmdJsonExport.TabIndex = 14;
             this.cmdJsonExport.Text = "Export response to JSON file";
             this.cmdJsonExport.UseVisualStyleBackColor = true;
-            this.cmdJsonExport.Click += new System.EventHandler(this.cmdJsonExport_Click);
+            this.cmdJsonExport.Click += new System.EventHandler(this.CmdJsonExport_Click);
             // 
             // label7
             // 

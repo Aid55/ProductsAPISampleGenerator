@@ -6,7 +6,7 @@ using System.Text;
 
 namespace productsAPIClient
 {
-    public enum httpVerb
+    public enum HttpVerb
     {
         GET,
         POST,
@@ -16,23 +16,23 @@ namespace productsAPIClient
 
     class RestClient
     {
-        public string endPoint { get; set; }
-        public httpVerb httpMethod { get; set; }
-        public string userName { get; set; }
-        public string userPassword { get; set; }
+        public string EndPoint { get; set; }
+        public HttpVerb HttpMethod { get; set; }
+        public string UserName { get; set; }
+        public string UserPassword { get; set; }
         public RestClient()
         {
-            endPoint = string.Empty;
-            httpMethod = httpVerb.GET;
+            EndPoint = string.Empty;
+            HttpMethod = HttpVerb.GET;
             
         }
 
-        public string makeRequest(string username, string password)
+        public string MakeRequest(string username, string password)
         {
             string strResponseValue = string.Empty;
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(endPoint);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(EndPoint);
             request.Headers.Set(username, password);
-            request.Method = httpMethod.ToString();
+            request.Method = HttpMethod.ToString();
             HttpWebResponse response = null;
             try
             {

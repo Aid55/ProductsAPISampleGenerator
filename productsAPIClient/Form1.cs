@@ -23,73 +23,73 @@ namespace productsAPIClient
             InitializeComponent();
         }
 
-        private void sendRequest(string url)
+        private void SendRequest(string url)
         {
             RestClient rClient = new RestClient();
-            rClient.endPoint = url;
+            rClient.EndPoint = url;
             txtResponse.Text = string.Empty;
-            debugOutput("Rest client created successfully");
+            DebugOutput("Rest client created successfully");
             strResponse = string.Empty;
             if (ClientConfig.apiKeyName == string.Empty || ClientConfig.apiKeyValue == string.Empty)
             {
-                strResponse = rClient.makeRequest(txtAqKeyName.Text.ToString(), txtAqKeyValue.Text.ToString());
+                strResponse = rClient.MakeRequest(txtAqKeyName.Text.ToString(), txtAqKeyValue.Text.ToString());
             }
             else
             {
-                strResponse = rClient.makeRequest(ClientConfig.apiKeyName, ClientConfig.apiKeyValue);
+                strResponse = rClient.MakeRequest(ClientConfig.apiKeyName, ClientConfig.apiKeyValue);
             }
-            debugOutput("See response below:");
-            debugOutput(strResponse);
+            DebugOutput("See response below:");
+            DebugOutput(strResponse);
         }
 
-        private void deserializeJson(string strJson)
+        private void DeserializeJson(string strJson)
         {
             try
             {
                 var jsonObject = JsonConvert.DeserializeObject<dynamic>(strJson);
-                debugOutput(jsonObject.ToString());
+                DebugOutput(jsonObject.ToString());
             }
             catch(Exception ex)
             {
-                debugOutput("Deserialization problem" + ex.Message.ToString());
+                DebugOutput("Deserialization problem" + ex.Message.ToString());
             }
         }
 
-        private void serializeJson(Object jsonObject)
+        private void SerializeJson(Object jsonObject)
         {
             try
             {
                 string jsonString = JsonConvert.SerializeObject(jsonObject);
-                debugOutput(jsonString);
+                DebugOutput(jsonString);
             }
             catch (Exception ex)
             {
-                debugOutput("Serialization problem" + ex.Message.ToString());
+                DebugOutput("Serialization problem" + ex.Message.ToString());
             }
         }
 
-        private void debugOutput(string strDebugText)
+        private void DebugOutput(string strDebugText)
         {
             System.Diagnostics.Debug.Write(strDebugText + Environment.NewLine);
             txtResponse.Text += strDebugText + Environment.NewLine;
         }
 
-        private void cmdMfrBillingInfo_Click(object sender, EventArgs e)
+        private void CmdMfrBillingInfo_Click(object sender, EventArgs e)
         {
-            sendRequest(ClientConfig.billingUrl);
+            SendRequest(ClientConfig.billingUrl);
         }
 
-        private void cmdMfrProducts_Click(object sender, EventArgs e)
+        private void CmdMfrProducts_Click(object sender, EventArgs e)
         {
-            sendRequest(ClientConfig.mfrProdsUrl + txtMfrId.Text + "/products");
+            SendRequest(ClientConfig.mfrProdsUrl + txtMfrId.Text + "/products");
         }
 
-        private void cmdProduct_Click(object sender, EventArgs e)
+        private void CmdProduct_Click(object sender, EventArgs e)
         {
-            sendRequest(ClientConfig.prodUrl + txtProdId.Text);
+            SendRequest(ClientConfig.prodUrl + txtProdId.Text);
         }
 
-        private void cmdJsonExport_Click(object sender, EventArgs e)
+        private void CmdJsonExport_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
             saveFileDialog1.InitialDirectory = @"C:\\Users\\AidanBatchelor\\OneDrive - AUTOQUOTES,LLC\\Desktop\\";      
