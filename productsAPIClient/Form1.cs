@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+﻿using Newtonsoft.Json;
+using System;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Newtonsoft.Json;
 
 namespace productsAPIClient
 {
@@ -39,32 +33,35 @@ namespace productsAPIClient
                 strResponse = rClient.MakeRequest(ClientConfig.apiKeyName, ClientConfig.apiKeyValue);
             }
             DebugOutput("See response below:");
-            DebugOutput(strResponse);
         }
 
-        private void DeserializeJson(string strJson)
+        private Object DeserializeJson(string strJson)
         {
             try
             {
                 var jsonObject = JsonConvert.DeserializeObject<dynamic>(strJson);
-                DebugOutput(jsonObject.ToString());
+                return jsonObject.data;
+                //DebugOutput(jsonObject.ToString());
             }
             catch(Exception ex)
             {
-                DebugOutput("Deserialization problem" + ex.Message.ToString());
+                return ex.Message.ToString();
+                //DebugOutput("Deserialization problem" + ex.Message.ToString());
             }
         }
 
-        private void SerializeJson(Object jsonObject)
+        private string SerializeJson(Object jsonObject)
         {
             try
             {
                 string jsonString = JsonConvert.SerializeObject(jsonObject);
-                DebugOutput(jsonString);
+                return jsonString;
+                //DebugOutput(jsonString);
             }
             catch (Exception ex)
             {
-                DebugOutput("Serialization problem" + ex.Message.ToString());
+                return ex.Message.ToString();
+                //DebugOutput("Serialization problem" + ex.Message.ToString());
             }
         }
 
@@ -77,22 +74,44 @@ namespace productsAPIClient
         private void CmdMfrBillingInfo_Click(object sender, EventArgs e)
         {
             SendRequest(ClientConfig.billingUrl);
+            DebugOutput(strResponse);
         }
 
         private void CmdMfrProducts_Click(object sender, EventArgs e)
         {
             SendRequest(ClientConfig.mfrProdsUrl + txtMfrId.Text + "/products");
+            DebugOutput(strResponse);
         }
 
         private void CmdProduct_Click(object sender, EventArgs e)
         {
             SendRequest(ClientConfig.prodUrl + txtProdId.Text);
+            DebugOutput(strResponse);
+        }
+
+        private void CmdGetProductList_Click(object sender, EventArgs e)
+        {
+            string[] prodIds = txtProdIdList.Text.Split(Environment.NewLine);
+            string jsonString = "{\"data\":[";
+            foreach (string prodId in prodIds)
+            {
+                SendRequest(ClientConfig.prodUrl + prodId);
+                Object jsonObjectData = DeserializeJson(strResponse);
+                string newString = SerializeJson(jsonObjectData);
+                jsonString += newString;
+                jsonString += ",";
+            }
+            jsonString = jsonString.Remove(jsonString.Length - 1, 1);
+            jsonString += "]}";
+            strResponse = string.Empty;
+            strResponse = jsonString;
+            DebugOutput(strResponse);
         }
 
         private void CmdJsonExport_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-            saveFileDialog1.InitialDirectory = @"C:\\Users\\AidanBatchelor\\OneDrive - AUTOQUOTES,LLC\\Desktop\\";      
+            saveFileDialog1.InitialDirectory = @Environment.GetFolderPath(Environment.SpecialFolder.Desktop);      
             saveFileDialog1.Title = "Save to JSON file";
             saveFileDialog1.CheckPathExists = true;
             saveFileDialog1.DefaultExt = "json";
@@ -107,6 +126,7 @@ namespace productsAPIClient
                 fs.Close();
             }
         }
+
 
     }
 }

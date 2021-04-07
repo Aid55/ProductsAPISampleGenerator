@@ -37,16 +37,20 @@ namespace productsAPIClient
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.cmdMfrBillingInfo = new System.Windows.Forms.Button();
-            this.cmdMfrProducts = new System.Windows.Forms.Button();
+            this.cmdGetMfrBillingInfo = new System.Windows.Forms.Button();
+            this.cmdGetMfrProducts = new System.Windows.Forms.Button();
             this.txtMfrId = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.cmdProduct = new System.Windows.Forms.Button();
+            this.cmdGetProductList = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.txtProdIdList = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.cmdGetProduct = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.txtProdId = new System.Windows.Forms.TextBox();
             this.cmdJsonExport = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -56,17 +60,17 @@ namespace productsAPIClient
             this.txtResponse.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtResponse.Location = new System.Drawing.Point(140, 172);
+            this.txtResponse.Location = new System.Drawing.Point(126, 224);
             this.txtResponse.Multiline = true;
             this.txtResponse.Name = "txtResponse";
             this.txtResponse.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtResponse.Size = new System.Drawing.Size(638, 200);
+            this.txtResponse.Size = new System.Drawing.Size(672, 164);
             this.txtResponse.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(37, 190);
+            this.label2.Location = new System.Drawing.Point(37, 227);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(57, 15);
             this.label2.TabIndex = 4;
@@ -122,37 +126,38 @@ namespace productsAPIClient
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label1.ForeColor = System.Drawing.Color.Crimson;
             this.label1.Location = new System.Drawing.Point(24, 99);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(287, 15);
             this.label1.TabIndex = 9;
             this.label1.Text = "LEAVE BOTH BOXES BLANK IF VALUES ARE PRESET";
             // 
-            // cmdMfrBillingInfo
+            // cmdGetMfrBillingInfo
             // 
-            this.cmdMfrBillingInfo.Location = new System.Drawing.Point(302, 21);
-            this.cmdMfrBillingInfo.Name = "cmdMfrBillingInfo";
-            this.cmdMfrBillingInfo.Size = new System.Drawing.Size(117, 23);
-            this.cmdMfrBillingInfo.TabIndex = 15;
-            this.cmdMfrBillingInfo.Text = "GET Mfr Billing Info";
-            this.cmdMfrBillingInfo.UseVisualStyleBackColor = true;
-            this.cmdMfrBillingInfo.Click += new System.EventHandler(this.CmdMfrBillingInfo_Click);
+            this.cmdGetMfrBillingInfo.Location = new System.Drawing.Point(320, 21);
+            this.cmdGetMfrBillingInfo.Name = "cmdGetMfrBillingInfo";
+            this.cmdGetMfrBillingInfo.Size = new System.Drawing.Size(117, 23);
+            this.cmdGetMfrBillingInfo.TabIndex = 15;
+            this.cmdGetMfrBillingInfo.Text = "GET Mfr Billing Info";
+            this.cmdGetMfrBillingInfo.UseVisualStyleBackColor = true;
+            this.cmdGetMfrBillingInfo.Click += new System.EventHandler(this.CmdMfrBillingInfo_Click);
             // 
-            // cmdMfrProducts
+            // cmdGetMfrProducts
             // 
-            this.cmdMfrProducts.Location = new System.Drawing.Point(302, 51);
-            this.cmdMfrProducts.Name = "cmdMfrProducts";
-            this.cmdMfrProducts.Size = new System.Drawing.Size(117, 23);
-            this.cmdMfrProducts.TabIndex = 16;
-            this.cmdMfrProducts.Text = "GET Mfr Products";
-            this.cmdMfrProducts.UseVisualStyleBackColor = true;
-            this.cmdMfrProducts.Click += new System.EventHandler(this.CmdMfrProducts_Click);
+            this.cmdGetMfrProducts.Location = new System.Drawing.Point(320, 51);
+            this.cmdGetMfrProducts.Name = "cmdGetMfrProducts";
+            this.cmdGetMfrProducts.Size = new System.Drawing.Size(117, 23);
+            this.cmdGetMfrProducts.TabIndex = 16;
+            this.cmdGetMfrProducts.Text = "GET Mfr Products";
+            this.cmdGetMfrProducts.UseVisualStyleBackColor = true;
+            this.cmdGetMfrProducts.Click += new System.EventHandler(this.CmdMfrProducts_Click);
             // 
             // txtMfrId
             // 
             this.txtMfrId.Location = new System.Drawing.Point(73, 51);
             this.txtMfrId.Name = "txtMfrId";
-            this.txtMfrId.Size = new System.Drawing.Size(223, 23);
+            this.txtMfrId.Size = new System.Drawing.Size(241, 23);
             this.txtMfrId.TabIndex = 17;
             this.txtMfrId.Text = "a38ad2af-7550-dd11-b5fb-00188bb07921";
             // 
@@ -167,30 +172,83 @@ namespace productsAPIClient
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.cmdGetProductList);
+            this.groupBox2.Controls.Add(this.label9);
+            this.groupBox2.Controls.Add(this.label8);
+            this.groupBox2.Controls.Add(this.txtProdIdList);
             this.groupBox2.Controls.Add(this.label7);
-            this.groupBox2.Controls.Add(this.cmdProduct);
+            this.groupBox2.Controls.Add(this.cmdGetProduct);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.txtProdId);
             this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Controls.Add(this.cmdMfrBillingInfo);
+            this.groupBox2.Controls.Add(this.cmdGetMfrBillingInfo);
             this.groupBox2.Controls.Add(this.txtMfrId);
-            this.groupBox2.Controls.Add(this.cmdMfrProducts);
+            this.groupBox2.Controls.Add(this.cmdGetMfrProducts);
             this.groupBox2.Location = new System.Drawing.Point(345, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(433, 141);
+            this.groupBox2.Size = new System.Drawing.Size(453, 206);
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Endpoints";
+            this.groupBox2.Text = "Requests";
             // 
-            // cmdProduct
+            // cmdGetProductList
             // 
-            this.cmdProduct.Location = new System.Drawing.Point(302, 80);
-            this.cmdProduct.Name = "cmdProduct";
-            this.cmdProduct.Size = new System.Drawing.Size(117, 23);
-            this.cmdProduct.TabIndex = 21;
-            this.cmdProduct.Text = "GET Product";
-            this.cmdProduct.UseVisualStyleBackColor = true;
-            this.cmdProduct.Click += new System.EventHandler(this.CmdProduct_Click);
+            this.cmdGetProductList.Location = new System.Drawing.Point(320, 111);
+            this.cmdGetProductList.Name = "cmdGetProductList";
+            this.cmdGetProductList.Size = new System.Drawing.Size(117, 23);
+            this.cmdGetProductList.TabIndex = 15;
+            this.cmdGetProductList.Text = "GET Product List";
+            this.cmdGetProductList.UseVisualStyleBackColor = true;
+            this.cmdGetProductList.Click += new System.EventHandler(this.CmdGetProductList_Click);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label9.ForeColor = System.Drawing.Color.Crimson;
+            this.label9.Location = new System.Drawing.Point(318, 161);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(129, 30);
+            this.label9.TabIndex = 24;
+            this.label9.Text = "1 GUID per line\r\nNo comma\'s or spaces";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(21, 115);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(51, 30);
+            this.label8.TabIndex = 23;
+            this.label8.Text = "Prod IDs\r\nlist";
+            // 
+            // txtProdIdList
+            // 
+            this.txtProdIdList.Location = new System.Drawing.Point(73, 112);
+            this.txtProdIdList.Multiline = true;
+            this.txtProdIdList.Name = "txtProdIdList";
+            this.txtProdIdList.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtProdIdList.Size = new System.Drawing.Size(241, 88);
+            this.txtProdIdList.TabIndex = 15;
+            this.txtProdIdList.Text = "0a646254-e0c1-df11-83ce-00304834ecff\r\n0d646254-e0c1-df11-83ce-00304834ecff";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(92, 25);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(177, 15);
+            this.label7.TabIndex = 22;
+            this.label7.Text = "No GUID needed for this request";
+            // 
+            // cmdGetProduct
+            // 
+            this.cmdGetProduct.Location = new System.Drawing.Point(320, 80);
+            this.cmdGetProduct.Name = "cmdGetProduct";
+            this.cmdGetProduct.Size = new System.Drawing.Size(117, 23);
+            this.cmdGetProduct.TabIndex = 21;
+            this.cmdGetProduct.Text = "GET Product";
+            this.cmdGetProduct.UseVisualStyleBackColor = true;
+            this.cmdGetProduct.Click += new System.EventHandler(this.CmdProduct_Click);
             // 
             // label6
             // 
@@ -205,13 +263,13 @@ namespace productsAPIClient
             // 
             this.txtProdId.Location = new System.Drawing.Point(73, 80);
             this.txtProdId.Name = "txtProdId";
-            this.txtProdId.Size = new System.Drawing.Size(223, 23);
+            this.txtProdId.Size = new System.Drawing.Size(241, 23);
             this.txtProdId.TabIndex = 19;
             this.txtProdId.Text = "0a646254-e0c1-df11-83ce-00304834ecff";
             // 
             // cmdJsonExport
             // 
-            this.cmdJsonExport.Location = new System.Drawing.Point(16, 333);
+            this.cmdJsonExport.Location = new System.Drawing.Point(16, 349);
             this.cmdJsonExport.Name = "cmdJsonExport";
             this.cmdJsonExport.Size = new System.Drawing.Size(104, 39);
             this.cmdJsonExport.TabIndex = 14;
@@ -219,20 +277,11 @@ namespace productsAPIClient
             this.cmdJsonExport.UseVisualStyleBackColor = true;
             this.cmdJsonExport.Click += new System.EventHandler(this.CmdJsonExport_Click);
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(92, 25);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(177, 15);
-            this.label7.TabIndex = 22;
-            this.label7.Text = "No GUID needed for this request";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(797, 399);
+            this.ClientSize = new System.Drawing.Size(813, 400);
             this.Controls.Add(this.cmdJsonExport);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtResponse);
@@ -257,17 +306,21 @@ namespace productsAPIClient
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button cmdMfrBillingInfo;
-        private System.Windows.Forms.Button cmdMfrProducts;
+        private System.Windows.Forms.Button cmdGetMfrBillingInfo;
+        private System.Windows.Forms.Button cmdGetMfrProducts;
         private System.Windows.Forms.TextBox txtMfrId;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button cmdProduct;
+        private System.Windows.Forms.Button cmdGetProduct;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtProdId;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button cmdJsonExport;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox txtProdIdList;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button cmdGetProductList;
     }
 }
 
