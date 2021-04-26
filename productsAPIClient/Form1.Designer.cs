@@ -80,14 +80,15 @@ namespace productsAPIClient
             // 
             this.txtAqKeyName.Location = new System.Drawing.Point(88, 22);
             this.txtAqKeyName.Name = "txtAqKeyName";
-            this.txtAqKeyName.Size = new System.Drawing.Size(223, 23);
+            this.txtAqKeyName.Size = new System.Drawing.Size(211, 23);
             this.txtAqKeyName.TabIndex = 5;
+            this.txtAqKeyName.Text = "ocp-apim-subscription-key";
             // 
             // txtAqKeyValue
             // 
             this.txtAqKeyValue.Location = new System.Drawing.Point(88, 51);
             this.txtAqKeyValue.Name = "txtAqKeyValue";
-            this.txtAqKeyValue.Size = new System.Drawing.Size(223, 23);
+            this.txtAqKeyValue.Size = new System.Drawing.Size(211, 23);
             this.txtAqKeyValue.TabIndex = 6;
             // 
             // label3
@@ -117,7 +118,7 @@ namespace productsAPIClient
             this.groupBox1.Controls.Add(this.txtAqKeyValue);
             this.groupBox1.Location = new System.Drawing.Point(16, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(323, 141);
+            this.groupBox1.Size = new System.Drawing.Size(314, 141);
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "AQ API Key";
@@ -135,7 +136,7 @@ namespace productsAPIClient
             // 
             // cmdGetMfrBillingInfo
             // 
-            this.cmdGetMfrBillingInfo.Location = new System.Drawing.Point(320, 21);
+            this.cmdGetMfrBillingInfo.Location = new System.Drawing.Point(339, 22);
             this.cmdGetMfrBillingInfo.Name = "cmdGetMfrBillingInfo";
             this.cmdGetMfrBillingInfo.Size = new System.Drawing.Size(117, 23);
             this.cmdGetMfrBillingInfo.TabIndex = 15;
@@ -145,7 +146,7 @@ namespace productsAPIClient
             // 
             // cmdGetMfrProducts
             // 
-            this.cmdGetMfrProducts.Location = new System.Drawing.Point(320, 51);
+            this.cmdGetMfrProducts.Location = new System.Drawing.Point(339, 52);
             this.cmdGetMfrProducts.Name = "cmdGetMfrProducts";
             this.cmdGetMfrProducts.Size = new System.Drawing.Size(117, 23);
             this.cmdGetMfrProducts.TabIndex = 16;
@@ -155,16 +156,16 @@ namespace productsAPIClient
             // 
             // txtMfrId
             // 
-            this.txtMfrId.Location = new System.Drawing.Point(73, 51);
+            this.txtMfrId.Location = new System.Drawing.Point(62, 51);
             this.txtMfrId.Name = "txtMfrId";
-            this.txtMfrId.Size = new System.Drawing.Size(241, 23);
+            this.txtMfrId.Size = new System.Drawing.Size(252, 23);
             this.txtMfrId.TabIndex = 17;
             this.txtMfrId.Text = "a38ad2af-7550-dd11-b5fb-00188bb07921";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(21, 54);
+            this.label5.Location = new System.Drawing.Point(6, 54);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(40, 15);
             this.label5.TabIndex = 18;
@@ -184,16 +185,16 @@ namespace productsAPIClient
             this.groupBox2.Controls.Add(this.cmdGetMfrBillingInfo);
             this.groupBox2.Controls.Add(this.txtMfrId);
             this.groupBox2.Controls.Add(this.cmdGetMfrProducts);
-            this.groupBox2.Location = new System.Drawing.Point(345, 12);
+            this.groupBox2.Location = new System.Drawing.Point(336, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(453, 206);
+            this.groupBox2.Size = new System.Drawing.Size(462, 206);
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Requests";
             // 
             // cmdGetProductList
             // 
-            this.cmdGetProductList.Location = new System.Drawing.Point(320, 111);
+            this.cmdGetProductList.Location = new System.Drawing.Point(339, 112);
             this.cmdGetProductList.Name = "cmdGetProductList";
             this.cmdGetProductList.Size = new System.Drawing.Size(117, 23);
             this.cmdGetProductList.TabIndex = 15;
@@ -206,16 +207,16 @@ namespace productsAPIClient
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label9.ForeColor = System.Drawing.Color.Crimson;
-            this.label9.Location = new System.Drawing.Point(318, 161);
+            this.label9.Location = new System.Drawing.Point(363, 155);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(129, 30);
+            this.label9.Size = new System.Drawing.Size(93, 45);
             this.label9.TabIndex = 24;
-            this.label9.Text = "1 GUID per line\r\nNo comma\'s or spaces";
+            this.label9.Text = "1 GUID per line\r\nNo comma\'s \r\nor spaces";
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(21, 115);
+            this.label8.Location = new System.Drawing.Point(6, 115);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(51, 30);
             this.label8.TabIndex = 23;
@@ -223,11 +224,11 @@ namespace productsAPIClient
             // 
             // txtProdIdList
             // 
-            this.txtProdIdList.Location = new System.Drawing.Point(73, 112);
+            this.txtProdIdList.Location = new System.Drawing.Point(62, 112);
             this.txtProdIdList.Multiline = true;
             this.txtProdIdList.Name = "txtProdIdList";
             this.txtProdIdList.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtProdIdList.Size = new System.Drawing.Size(241, 88);
+            this.txtProdIdList.Size = new System.Drawing.Size(271, 88);
             this.txtProdIdList.TabIndex = 15;
             this.txtProdIdList.Text = "0a646254-e0c1-df11-83ce-00304834ecff\r\n0d646254-e0c1-df11-83ce-00304834ecff";
             // 
@@ -242,7 +243,7 @@ namespace productsAPIClient
             // 
             // cmdGetProduct
             // 
-            this.cmdGetProduct.Location = new System.Drawing.Point(320, 80);
+            this.cmdGetProduct.Location = new System.Drawing.Point(339, 81);
             this.cmdGetProduct.Name = "cmdGetProduct";
             this.cmdGetProduct.Size = new System.Drawing.Size(117, 23);
             this.cmdGetProduct.TabIndex = 21;
@@ -253,7 +254,7 @@ namespace productsAPIClient
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(21, 83);
+            this.label6.Location = new System.Drawing.Point(6, 83);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(46, 15);
             this.label6.TabIndex = 20;
@@ -261,9 +262,9 @@ namespace productsAPIClient
             // 
             // txtProdId
             // 
-            this.txtProdId.Location = new System.Drawing.Point(73, 80);
+            this.txtProdId.Location = new System.Drawing.Point(62, 80);
             this.txtProdId.Name = "txtProdId";
-            this.txtProdId.Size = new System.Drawing.Size(241, 23);
+            this.txtProdId.Size = new System.Drawing.Size(252, 23);
             this.txtProdId.TabIndex = 19;
             this.txtProdId.Text = "0a646254-e0c1-df11-83ce-00304834ecff";
             // 
