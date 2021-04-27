@@ -16,6 +16,7 @@ namespace ProductsAPISampleGenerator
         string strResponse = string.Empty;
         SortedDictionary<string, string> mfrDict;
         SortedDictionary<string, string> productByMfrDict;
+        Boolean isTaskRunning = false;
 
         public MainForm()
         {
@@ -107,26 +108,9 @@ namespace ProductsAPISampleGenerator
             DebugOutput(strResponse);
         }
 
-        private void CmdJsonExport_Click(object sender, EventArgs e)
+            private void cmdChooseMfr_Click(object sender, EventArgs e)
         {
-            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-            saveFileDialog1.InitialDirectory = @Environment.GetFolderPath(Environment.SpecialFolder.Desktop);      
-            saveFileDialog1.Title = "Save to JSON file";
-            saveFileDialog1.CheckPathExists = true;
-            saveFileDialog1.DefaultExt = "json";
-            saveFileDialog1.Filter = "json files (*.json)|*.json|All files (*.*)|*.*";
-            saveFileDialog1.FilterIndex = 1;
-            saveFileDialog1.RestoreDirectory = true;
-            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                FileStream fs = (FileStream)saveFileDialog1.OpenFile();
-                byte[] bytes = Encoding.UTF8.GetBytes(strResponse);
-                fs.Write(bytes);
-                fs.Close();
-            }
-        }
-        private void cmdChooseMfr_Click(object sender, EventArgs e)
-        {
+            isTaskRunning = true;
             DebugOutput("Manufacturers found.");
             string mfrsJson = SendRequest(ClientConfig.billingUrl);
             MfrBilling mfrList = DeserializeMfrsJson(mfrsJson);
@@ -140,7 +124,6 @@ namespace ProductsAPISampleGenerator
             {
                 checkedListBox1.Items.Add(mfr);
             }
-
         }
 
         private void cmdChooseProds_Click(object sender, EventArgs e)
@@ -176,7 +159,7 @@ namespace ProductsAPISampleGenerator
                     string productsjson = SendRequest(ClientConfig.mfrProdsUrl + mfrDict[selectedMfr] + "/products");
                     ProductsByMfr mfrProducts = DeserializeMfrProductsJson(productsjson);
                     checkedListBox2.Items.Clear();
-                    productByMfrDict = new SortedDictionary<string,string>();
+                    productByMfrDict = new SortedDictionary<string, string>();
                     foreach (ProductsByMfrDatum prod in mfrProducts.Data)
                     {
                         productByMfrDict.Add(prod.Models.MfrModel, prod.ProductId.ToString());
@@ -186,16 +169,6 @@ namespace ProductsAPISampleGenerator
                         checkedListBox2.Items.Add(prod);
                     }
                 }
-            }
-        }
-
-        private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            CheckedListBox.CheckedIndexCollection checkedIndices = checkedListBox1.CheckedIndices;
-
-            if (checkedIndices.Count > 0 && checkedIndices[0] != e.Index)
-            {
-                checkedListBox1.SetItemChecked(checkedIndices[0], false);
             }
         }
 
@@ -209,7 +182,7 @@ namespace ProductsAPISampleGenerator
                     List<string> prodIds = new List<string>();
                     foreach (Object item in checkedListBox2.CheckedItems)
                     {
-                        if(productByMfrDict.ContainsKey(item.ToString()))
+                        if (productByMfrDict.ContainsKey(item.ToString()))
                         {
                             prodIds.Add(productByMfrDict[item.ToString()]);
                         }
@@ -219,6 +192,37 @@ namespace ProductsAPISampleGenerator
                 }
             }
         }
+
+        private void CmdJsonExport_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.InitialDirectory = @Environment.GetFolderPath(Environment.SpecialFolder.Desktop);      
+            saveFileDialog1.Title = "Save to JSON file";
+            saveFileDialog1.CheckPathExists = true;
+            saveFileDialog1.DefaultExt = "json";
+            saveFileDialog1.Filter = "json files (*.json)|*.json|All files (*.*)|*.*";
+            saveFileDialog1.FilterIndex = 1;
+            saveFileDialog1.RestoreDirectory = true;
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                FileStream fs = (FileStream)saveFileDialog1.OpenFile();
+                byte[] bytes = Encoding.UTF8.GetBytes(strResponse);
+                fs.Write(bytes);
+                fs.Close();
+            }
+        }
+
+        private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            CheckedListBox.CheckedIndexCollection checkedIndices = checkedListBox1.CheckedIndices;
+
+            if (checkedIndices.Count > 0 && checkedIndices[0] != e.Index)
+            {
+                checkedListBox1.SetItemChecked(checkedIndices[0], false);
+            }
+        }
+
+        
 
         private string buildJsonStringForProductIds(List<string> prodIds)
         {
