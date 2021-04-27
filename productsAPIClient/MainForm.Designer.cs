@@ -52,6 +52,10 @@ namespace ProductsAPISampleGenerator
             this.txtProdId = new System.Windows.Forms.TextBox();
             this.cmdJsonExport = new System.Windows.Forms.Button();
             this.cmdChooseMfr = new System.Windows.Forms.Button();
+            this.cmdChooseProds = new System.Windows.Forms.Button();
+            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
+            this.checkedListBox2 = new System.Windows.Forms.CheckedListBox();
+            this.cmdGetSelectedProducts = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBoxApiKeyType.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -62,17 +66,17 @@ namespace ProductsAPISampleGenerator
             this.txtResponse.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtResponse.Location = new System.Drawing.Point(126, 224);
+            this.txtResponse.Location = new System.Drawing.Point(93, 394);
             this.txtResponse.Multiline = true;
             this.txtResponse.Name = "txtResponse";
             this.txtResponse.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtResponse.Size = new System.Drawing.Size(672, 325);
+            this.txtResponse.Size = new System.Drawing.Size(385, 164);
             this.txtResponse.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(37, 227);
+            this.label2.Location = new System.Drawing.Point(16, 397);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(57, 15);
             this.label2.TabIndex = 4;
@@ -191,12 +195,12 @@ namespace ProductsAPISampleGenerator
             this.groupBox2.Controls.Add(this.cmdGetMfrBillingInfo);
             this.groupBox2.Controls.Add(this.txtMfrId);
             this.groupBox2.Controls.Add(this.cmdGetMfrProducts);
-            this.groupBox2.Location = new System.Drawing.Point(336, 12);
+            this.groupBox2.Location = new System.Drawing.Point(16, 182);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(462, 206);
             this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Requests";
+            this.groupBox2.Text = "Custom Requests";
             // 
             // cmdGetProductList
             // 
@@ -276,28 +280,74 @@ namespace ProductsAPISampleGenerator
             // 
             // cmdJsonExport
             // 
-            this.cmdJsonExport.Location = new System.Drawing.Point(16, 349);
+            this.cmdJsonExport.Location = new System.Drawing.Point(16, 516);
             this.cmdJsonExport.Name = "cmdJsonExport";
-            this.cmdJsonExport.Size = new System.Drawing.Size(104, 39);
+            this.cmdJsonExport.Size = new System.Drawing.Size(71, 42);
             this.cmdJsonExport.TabIndex = 14;
-            this.cmdJsonExport.Text = "Export response to JSON file";
+            this.cmdJsonExport.Text = "Export response";
             this.cmdJsonExport.UseVisualStyleBackColor = true;
             this.cmdJsonExport.Click += new System.EventHandler(this.CmdJsonExport_Click);
             // 
             // cmdChooseMfr
             // 
-            this.cmdChooseMfr.Location = new System.Drawing.Point(19, 279);
+            this.cmdChooseMfr.Location = new System.Drawing.Point(484, 21);
             this.cmdChooseMfr.Name = "cmdChooseMfr";
-            this.cmdChooseMfr.Size = new System.Drawing.Size(88, 36);
+            this.cmdChooseMfr.Size = new System.Drawing.Size(225, 31);
             this.cmdChooseMfr.TabIndex = 15;
-            this.cmdChooseMfr.Text = "Choose Mfr";
+            this.cmdChooseMfr.Text = "Choose a manufacturer";
             this.cmdChooseMfr.UseVisualStyleBackColor = true;
+            this.cmdChooseMfr.Click += new System.EventHandler(this.cmdChooseMfr_Click);
+            // 
+            // cmdChooseProds
+            // 
+            this.cmdChooseProds.Location = new System.Drawing.Point(724, 21);
+            this.cmdChooseProds.Name = "cmdChooseProds";
+            this.cmdChooseProds.Size = new System.Drawing.Size(225, 31);
+            this.cmdChooseProds.TabIndex = 16;
+            this.cmdChooseProds.Text = "Choose products to export";
+            this.cmdChooseProds.UseVisualStyleBackColor = true;
+            this.cmdChooseProds.Click += new System.EventHandler(this.cmdChooseProds_Click);
+            // 
+            // checkedListBox1
+            // 
+            this.checkedListBox1.CheckOnClick = true;
+            this.checkedListBox1.FormattingEnabled = true;
+            this.checkedListBox1.Location = new System.Drawing.Point(484, 68);
+            this.checkedListBox1.Name = "checkedListBox1";
+            this.checkedListBox1.ScrollAlwaysVisible = true;
+            this.checkedListBox1.Size = new System.Drawing.Size(225, 490);
+            this.checkedListBox1.TabIndex = 17;
+            this.checkedListBox1.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBox1_ItemCheck);
+            // 
+            // checkedListBox2
+            // 
+            this.checkedListBox2.CheckOnClick = true;
+            this.checkedListBox2.FormattingEnabled = true;
+            this.checkedListBox2.Location = new System.Drawing.Point(724, 68);
+            this.checkedListBox2.Name = "checkedListBox2";
+            this.checkedListBox2.ScrollAlwaysVisible = true;
+            this.checkedListBox2.Size = new System.Drawing.Size(225, 490);
+            this.checkedListBox2.TabIndex = 18;
+            // 
+            // cmdGetSelectedProducts
+            // 
+            this.cmdGetSelectedProducts.Location = new System.Drawing.Point(12, 438);
+            this.cmdGetSelectedProducts.Name = "cmdGetSelectedProducts";
+            this.cmdGetSelectedProducts.Size = new System.Drawing.Size(75, 62);
+            this.cmdGetSelectedProducts.TabIndex = 19;
+            this.cmdGetSelectedProducts.Text = "GET selected products";
+            this.cmdGetSelectedProducts.UseVisualStyleBackColor = true;
+            this.cmdGetSelectedProducts.Click += new System.EventHandler(this.cmdGetSelectedProducts_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(813, 561);
+            this.ClientSize = new System.Drawing.Size(961, 570);
+            this.Controls.Add(this.cmdGetSelectedProducts);
+            this.Controls.Add(this.checkedListBox2);
+            this.Controls.Add(this.checkedListBox1);
+            this.Controls.Add(this.cmdChooseProds);
             this.Controls.Add(this.cmdChooseMfr);
             this.Controls.Add(this.cmdJsonExport);
             this.Controls.Add(this.label2);
@@ -340,6 +390,10 @@ namespace ProductsAPISampleGenerator
         private System.Windows.Forms.RadioButton rdoUsKey;
         private System.Windows.Forms.RadioButton rdoUkKey;
         private System.Windows.Forms.Button cmdChooseMfr;
+        private System.Windows.Forms.Button cmdChooseProds;
+        private System.Windows.Forms.CheckedListBox checkedListBox1;
+        private System.Windows.Forms.CheckedListBox checkedListBox2;
+        private System.Windows.Forms.Button cmdGetSelectedProducts;
     }
 }
 

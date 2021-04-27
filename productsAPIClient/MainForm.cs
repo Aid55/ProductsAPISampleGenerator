@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using static System.Windows.Forms.CheckedListBox;
 
 namespace ProductsAPISampleGenerator
 {
@@ -11,6 +13,8 @@ namespace ProductsAPISampleGenerator
     {
 
         string strResponse = string.Empty;
+        SortedDictionary<string, string> mfrDict;
+        SortedDictionary<string, string> productByMfrDict;
 
         public MainForm()
         {
@@ -49,6 +53,36 @@ namespace ProductsAPISampleGenerator
             catch(Exception ex)
             {
                 return ex.Message.ToString();
+                //DebugOutput("Deserialization problem" + ex.Message.ToString());
+            }
+        }
+
+        private MfrBilling DeserializeMfrsJson(string strJson)
+        {
+            try
+            {
+                var jsonObject = JsonConvert.DeserializeObject<MfrBilling>(strJson);
+                return jsonObject;
+                //DebugOutput(jsonObject.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message.ToString());
+                //DebugOutput("Deserialization problem" + ex.Message.ToString());
+            }
+        }
+
+        private ProductsByMfr DeserializeMfrProductsJson(string strJson)
+        {
+            try
+            {
+                var jsonObject = JsonConvert.DeserializeObject<ProductsByMfr>(strJson);
+                return jsonObject;
+                //DebugOutput(jsonObject.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message.ToString());
                 //DebugOutput("Deserialization problem" + ex.Message.ToString());
             }
         }
@@ -128,6 +162,83 @@ namespace ProductsAPISampleGenerator
                 fs.Close();
             }
         }
+        private void cmdChooseMfr_Click(object sender, EventArgs e)
+        {
+            string mfrsJson = SendRequest(ClientConfig.billingUrl);
+            MfrBilling mfrList = DeserializeMfrsJson(mfrsJson);
+            checkedListBox1.Items.Clear();
+            SortedDictionary<string,string> mfrs = new SortedDictionary<string,string>();
+            foreach (MfrBillingDatum mfr in mfrList.Data)
+            {
+                mfrs.Add(mfr.MfrName, mfr.MfrId.ToString());
+            }
+            foreach (string mfr in mfrs.Keys) 
+            {
+                checkedListBox1.Items.Add(mfr);
+            }
 
+        }
+
+        private void cmdChooseProds_Click(object sender, EventArgs e)
+        {
+            if (checkedListBox1.CheckedItems.Count != 0)
+            {
+                string mfrsJson = SendRequest(ClientConfig.billingUrl);
+                MfrBilling mfrList = DeserializeMfrsJson(mfrsJson);
+                Boolean mfrFound = false;
+                string selectedMfr;
+                foreach(Object item in checkedListBox1.CheckedItems)
+                {
+                    if (mfrFound)
+                    {
+                        DebugOutput("leaving outer loop");
+                        break;
+                    }
+                    foreach (MfrBillingDatum mfr in mfrList.Data)
+                    {
+                        if (mfrFound)
+                        {
+                            DebugOutput("Leaving inner loop");
+                            break;
+                        }
+                        if (item.Equals(mfr.MfrName))
+                        {
+                            DebugOutput("Mfr found" + mfr.MfrName);
+                            mfrFound = true;
+                            selectedMfr = item.ToString();
+
+                        }
+                    }
+                }
+                string productsjson = SendRequest(ClientConfig.mfrProdsUrl + txtMfrId.Text + "/products");
+                ProductsByMfr mfrProducts = DeserializeMfrProductsJson(productsjson);
+                checkedListBox2.Items.Clear();
+                List<string> products = new List<string>();
+                foreach (ProductsByMfrDatum prod in mfrProducts.Data)
+                {
+                    products.Add(prod.Models.MfrModel);
+                }
+                products.Sort();
+                foreach (string prod in products)
+                {
+                    checkedListBox2.Items.Add(prod);
+                }
+            }
+        }
+
+        private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            CheckedListBox.CheckedIndexCollection checkedIndices = checkedListBox1.CheckedIndices;
+
+            if (checkedIndices.Count > 0 && checkedIndices[0] != e.Index)
+            {
+                checkedListBox1.SetItemChecked(checkedIndices[0], false);
+            }
+        }
+
+        private void cmdGetSelectedProducts_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
