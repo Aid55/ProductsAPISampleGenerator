@@ -167,12 +167,12 @@ namespace ProductsAPISampleGenerator
             string mfrsJson = SendRequest(ClientConfig.billingUrl);
             MfrBilling mfrList = DeserializeMfrsJson(mfrsJson);
             checkedListBox1.Items.Clear();
-            SortedDictionary<string,string> mfrs = new SortedDictionary<string,string>();
+            mfrDict = new SortedDictionary<string,string>();
             foreach (MfrBillingDatum mfr in mfrList.Data)
             {
-                mfrs.Add(mfr.MfrName, mfr.MfrId.ToString());
+                mfrDict.Add(mfr.MfrName, mfr.MfrId.ToString());
             }
-            foreach (string mfr in mfrs.Keys) 
+            foreach (string mfr in mfrDict.Keys) 
             {
                 checkedListBox1.Items.Add(mfr);
             }
@@ -183,45 +183,46 @@ namespace ProductsAPISampleGenerator
         {
             if (checkedListBox1.CheckedItems.Count != 0)
             {
-                string mfrsJson = SendRequest(ClientConfig.billingUrl);
-                MfrBilling mfrList = DeserializeMfrsJson(mfrsJson);
-                Boolean mfrFound = false;
-                string selectedMfr;
-                foreach(Object item in checkedListBox1.CheckedItems)
+                if (mfrDict != null)
                 {
-                    if (mfrFound)
-                    {
-                        DebugOutput("leaving outer loop");
-                        break;
-                    }
-                    foreach (MfrBillingDatum mfr in mfrList.Data)
+
+                    Boolean mfrFound = false;
+                    string selectedMfr = string.Empty;
+                    foreach (Object item in checkedListBox1.CheckedItems)
                     {
                         if (mfrFound)
                         {
-                            DebugOutput("Leaving inner loop");
+                            DebugOutput("leaving outer loop");
                             break;
                         }
-                        if (item.Equals(mfr.MfrName))
+                        foreach (string mfr in mfrDict.Keys)
                         {
-                            DebugOutput("Mfr found" + mfr.MfrName);
-                            mfrFound = true;
-                            selectedMfr = item.ToString();
+                            if (mfrFound)
+                            {
+                                DebugOutput("Leaving inner loop");
+                                break;
+                            }
+                            if (item.Equals(mfr))
+                            {
+                                DebugOutput("Mfr found" + mfr);
+                                mfrFound = true;
+                                selectedMfr = mfr;
 
+                            }
                         }
                     }
-                }
-                string productsjson = SendRequest(ClientConfig.mfrProdsUrl + txtMfrId.Text + "/products");
-                ProductsByMfr mfrProducts = DeserializeMfrProductsJson(productsjson);
-                checkedListBox2.Items.Clear();
-                List<string> products = new List<string>();
-                foreach (ProductsByMfrDatum prod in mfrProducts.Data)
-                {
-                    products.Add(prod.Models.MfrModel);
-                }
-                products.Sort();
-                foreach (string prod in products)
-                {
-                    checkedListBox2.Items.Add(prod);
+                    string productsjson = SendRequest(ClientConfig.mfrProdsUrl + mfrDict[selectedMfr] + "/products");
+                    ProductsByMfr mfrProducts = DeserializeMfrProductsJson(productsjson);
+                    checkedListBox2.Items.Clear();
+                    productByMfrDict = new SortedDictionary<string,string>();
+                    foreach (ProductsByMfrDatum prod in mfrProducts.Data)
+                    {
+                        productByMfrDict.Add(prod.Models.MfrModel, prod.ProductId.ToString());
+                    }
+                    foreach (string prod in productByMfrDict.Keys)
+                    {
+                        checkedListBox2.Items.Add(prod);
+                    }
                 }
             }
         }
@@ -238,7 +239,36 @@ namespace ProductsAPISampleGenerator
 
         private void cmdGetSelectedProducts_Click(object sender, EventArgs e)
         {
+            if (checkedListBox2.CheckedItems.Count != 0)
+            {
+                if (productByMfrDict != null)
+                {
 
+                    List<string> prodIds = new List<string>();
+                    foreach (Object item in checkedListBox2.CheckedItems)
+                    {
+                        if(productByMfrDict.ContainsKey(item.ToString()))
+                        {
+                            DebugOutput("prodId for product found: " + item.ToString());
+                            prodIds.Add(productByMfrDict[item.ToString()]);
+
+                        }
+                    }
+                    strResponse = "{\"data\":[";
+                    string tempString = string.Empty;
+                    foreach (string prodId in prodIds)
+                    {
+                        tempString = SendRequest(ClientConfig.prodUrl + prodId);
+                        Object jsonObjectData = DeserializeJson(tempString);
+                        string newString = SerializeJson(jsonObjectData);
+                        strResponse += newString;
+                        strResponse += ",";
+                    }
+                    strResponse = strResponse.Remove(strResponse.Length - 1, 1);
+                    strResponse += "]}";
+                    DebugOutput(strResponse);
+                }
+            }
         }
     }
 }
