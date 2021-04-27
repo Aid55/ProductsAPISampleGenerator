@@ -4,33 +4,36 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
-namespace productsAPIClient
+namespace ProductsAPISampleGenerator
 {
 
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
 
         string strResponse = string.Empty;
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }
 
-        private void SendRequest(string url)
+        private string SendRequest(string url)
         {
             RestClient rClient = new RestClient();
             rClient.EndPoint = url;
             txtResponse.Text = string.Empty;
             DebugOutput("Rest client created successfully");
-            strResponse = string.Empty;
-            if (ClientConfig.apiKeyName == string.Empty || ClientConfig.apiKeyValue == string.Empty)
+            if (rdoUkKey.Checked)
             {
-                strResponse = rClient.MakeRequest(txtAqKeyName.Text.ToString(), txtAqKeyValue.Text.ToString());
+                return(rClient.MakeRequest(ClientConfig.apiKeyName, ClientConfig.apiUkKeyValue));
+            }
+            else if (rdoUsKey.Checked)
+            {
+                return(rClient.MakeRequest(ClientConfig.apiKeyName, ClientConfig.apiUsKeyValue));
             }
             else
             {
-                strResponse = rClient.MakeRequest(ClientConfig.apiKeyName, ClientConfig.apiKeyValue);
+                return(rClient.MakeRequest(ClientConfig.apiKeyName, txtAqKeyValue.Text.ToString()));
             }
             DebugOutput("See response below:");
         }
@@ -73,38 +76,37 @@ namespace productsAPIClient
 
         private void CmdMfrBillingInfo_Click(object sender, EventArgs e)
         {
-            SendRequest(ClientConfig.billingUrl);
+            strResponse = SendRequest(ClientConfig.billingUrl);
             DebugOutput(strResponse);
         }
 
         private void CmdMfrProducts_Click(object sender, EventArgs e)
         {
-            SendRequest(ClientConfig.mfrProdsUrl + txtMfrId.Text + "/products");
+            strResponse = SendRequest(ClientConfig.mfrProdsUrl + txtMfrId.Text + "/products");
             DebugOutput(strResponse);
         }
 
         private void CmdProduct_Click(object sender, EventArgs e)
         {
-            SendRequest(ClientConfig.prodUrl + txtProdId.Text);
+            strResponse = SendRequest(ClientConfig.prodUrl + txtProdId.Text);
             DebugOutput(strResponse);
         }
 
         private void CmdGetProductList_Click(object sender, EventArgs e)
         {
             string[] prodIds = txtProdIdList.Text.Split(Environment.NewLine);
-            string jsonString = "{\"data\":[";
+            strResponse = "{\"data\":[";
+            string tempString = string.Empty;
             foreach (string prodId in prodIds)
             {
-                SendRequest(ClientConfig.prodUrl + prodId);
-                Object jsonObjectData = DeserializeJson(strResponse);
+                tempString = SendRequest(ClientConfig.prodUrl + prodId);
+                Object jsonObjectData = DeserializeJson(tempString);
                 string newString = SerializeJson(jsonObjectData);
-                jsonString += newString;
-                jsonString += ",";
+                strResponse += newString;
+                strResponse += ",";
             }
-            jsonString = jsonString.Remove(jsonString.Length - 1, 1);
-            jsonString += "]}";
-            strResponse = string.Empty;
-            strResponse = jsonString;
+            strResponse = strResponse.Remove(strResponse.Length - 1, 1);
+            strResponse += "]}";
             DebugOutput(strResponse);
         }
 
@@ -126,7 +128,6 @@ namespace productsAPIClient
                 fs.Close();
             }
         }
-
 
     }
 }

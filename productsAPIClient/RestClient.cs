@@ -4,7 +4,7 @@ using System.Net;
 using System.Collections.Generic;
 using System.Text;
 
-namespace productsAPIClient
+namespace ProductsAPISampleGenerator
 {
     public enum HttpVerb
     {

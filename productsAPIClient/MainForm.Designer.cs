@@ -1,7 +1,7 @@
 ﻿
-namespace productsAPIClient
+namespace ProductsAPISampleGenerator
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -31,12 +31,12 @@ namespace productsAPIClient
         {
             this.txtResponse = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtAqKeyName = new System.Windows.Forms.TextBox();
             this.txtAqKeyValue = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.groupBoxApiKeyType = new System.Windows.Forms.GroupBox();
+            this.rdoCustomKey = new System.Windows.Forms.RadioButton();
+            this.rdoUsKey = new System.Windows.Forms.RadioButton();
+            this.rdoUkKey = new System.Windows.Forms.RadioButton();
             this.cmdGetMfrBillingInfo = new System.Windows.Forms.Button();
             this.cmdGetMfrProducts = new System.Windows.Forms.Button();
             this.txtMfrId = new System.Windows.Forms.TextBox();
@@ -51,7 +51,9 @@ namespace productsAPIClient
             this.label6 = new System.Windows.Forms.Label();
             this.txtProdId = new System.Windows.Forms.TextBox();
             this.cmdJsonExport = new System.Windows.Forms.Button();
+            this.cmdChooseMfr = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
+            this.groupBoxApiKeyType.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,7 +66,7 @@ namespace productsAPIClient
             this.txtResponse.Multiline = true;
             this.txtResponse.Name = "txtResponse";
             this.txtResponse.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtResponse.Size = new System.Drawing.Size(672, 164);
+            this.txtResponse.Size = new System.Drawing.Size(672, 325);
             this.txtResponse.TabIndex = 1;
             // 
             // label2
@@ -76,63 +78,67 @@ namespace productsAPIClient
             this.label2.TabIndex = 4;
             this.label2.Text = "Response";
             // 
-            // txtAqKeyName
-            // 
-            this.txtAqKeyName.Location = new System.Drawing.Point(88, 22);
-            this.txtAqKeyName.Name = "txtAqKeyName";
-            this.txtAqKeyName.Size = new System.Drawing.Size(211, 23);
-            this.txtAqKeyName.TabIndex = 5;
-            this.txtAqKeyName.Text = "ocp-apim-subscription-key";
-            // 
             // txtAqKeyValue
             // 
-            this.txtAqKeyValue.Location = new System.Drawing.Point(88, 51);
+            this.txtAqKeyValue.Location = new System.Drawing.Point(15, 100);
             this.txtAqKeyValue.Name = "txtAqKeyValue";
             this.txtAqKeyValue.Size = new System.Drawing.Size(211, 23);
             this.txtAqKeyValue.TabIndex = 6;
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(21, 25);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(61, 15);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "Key Name";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(21, 54);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(57, 15);
-            this.label4.TabIndex = 8;
-            this.label4.Text = "Key Value";
-            // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.txtAqKeyName);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.txtAqKeyValue);
+            this.groupBox1.Controls.Add(this.groupBoxApiKeyType);
             this.groupBox1.Location = new System.Drawing.Point(16, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(314, 141);
+            this.groupBox1.Size = new System.Drawing.Size(314, 164);
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "AQ API Key";
             // 
-            // label1
+            // groupBoxApiKeyType
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label1.ForeColor = System.Drawing.Color.Crimson;
-            this.label1.Location = new System.Drawing.Point(24, 99);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(287, 15);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "LEAVE BOTH BOXES BLANK IF VALUES ARE PRESET";
+            this.groupBoxApiKeyType.Controls.Add(this.rdoCustomKey);
+            this.groupBoxApiKeyType.Controls.Add(this.txtAqKeyValue);
+            this.groupBoxApiKeyType.Controls.Add(this.rdoUsKey);
+            this.groupBoxApiKeyType.Controls.Add(this.rdoUkKey);
+            this.groupBoxApiKeyType.Location = new System.Drawing.Point(6, 22);
+            this.groupBoxApiKeyType.Name = "groupBoxApiKeyType";
+            this.groupBoxApiKeyType.Size = new System.Drawing.Size(278, 133);
+            this.groupBoxApiKeyType.TabIndex = 10;
+            this.groupBoxApiKeyType.TabStop = false;
+            this.groupBoxApiKeyType.Text = "Choose key to use:";
+            // 
+            // rdoCustomKey
+            // 
+            this.rdoCustomKey.AutoSize = true;
+            this.rdoCustomKey.Location = new System.Drawing.Point(15, 79);
+            this.rdoCustomKey.Name = "rdoCustomKey";
+            this.rdoCustomKey.Size = new System.Drawing.Size(88, 19);
+            this.rdoCustomKey.TabIndex = 2;
+            this.rdoCustomKey.Text = "Custom key";
+            this.rdoCustomKey.UseVisualStyleBackColor = true;
+            // 
+            // rdoUsKey
+            // 
+            this.rdoUsKey.AutoSize = true;
+            this.rdoUsKey.Location = new System.Drawing.Point(15, 54);
+            this.rdoUsKey.Name = "rdoUsKey";
+            this.rdoUsKey.Size = new System.Drawing.Size(101, 19);
+            this.rdoUsKey.TabIndex = 1;
+            this.rdoUsKey.Text = "Default US key";
+            this.rdoUsKey.UseVisualStyleBackColor = true;
+            // 
+            // rdoUkKey
+            // 
+            this.rdoUkKey.AutoSize = true;
+            this.rdoUkKey.Checked = true;
+            this.rdoUkKey.Location = new System.Drawing.Point(15, 29);
+            this.rdoUkKey.Name = "rdoUkKey";
+            this.rdoUkKey.Size = new System.Drawing.Size(102, 19);
+            this.rdoUkKey.TabIndex = 0;
+            this.rdoUkKey.TabStop = true;
+            this.rdoUkKey.Text = "Default UK key";
+            this.rdoUkKey.UseVisualStyleBackColor = true;
             // 
             // cmdGetMfrBillingInfo
             // 
@@ -207,7 +213,7 @@ namespace productsAPIClient
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label9.ForeColor = System.Drawing.Color.Crimson;
-            this.label9.Location = new System.Drawing.Point(363, 155);
+            this.label9.Location = new System.Drawing.Point(339, 138);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(93, 45);
             this.label9.TabIndex = 24;
@@ -278,20 +284,31 @@ namespace productsAPIClient
             this.cmdJsonExport.UseVisualStyleBackColor = true;
             this.cmdJsonExport.Click += new System.EventHandler(this.CmdJsonExport_Click);
             // 
-            // Form1
+            // cmdChooseMfr
+            // 
+            this.cmdChooseMfr.Location = new System.Drawing.Point(19, 279);
+            this.cmdChooseMfr.Name = "cmdChooseMfr";
+            this.cmdChooseMfr.Size = new System.Drawing.Size(88, 36);
+            this.cmdChooseMfr.TabIndex = 15;
+            this.cmdChooseMfr.Text = "Choose Mfr";
+            this.cmdChooseMfr.UseVisualStyleBackColor = true;
+            // 
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(813, 400);
+            this.ClientSize = new System.Drawing.Size(813, 561);
+            this.Controls.Add(this.cmdChooseMfr);
             this.Controls.Add(this.cmdJsonExport);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtResponse);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "productsAPI rest client";
             this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.groupBoxApiKeyType.ResumeLayout(false);
+            this.groupBoxApiKeyType.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
@@ -302,10 +319,7 @@ namespace productsAPIClient
         #endregion
         private System.Windows.Forms.TextBox txtResponse;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtAqKeyName;
         private System.Windows.Forms.TextBox txtAqKeyValue;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button cmdGetMfrBillingInfo;
         private System.Windows.Forms.Button cmdGetMfrProducts;
@@ -315,13 +329,17 @@ namespace productsAPIClient
         private System.Windows.Forms.Button cmdGetProduct;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtProdId;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button cmdJsonExport;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtProdIdList;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button cmdGetProductList;
+        private System.Windows.Forms.GroupBox groupBoxApiKeyType;
+        private System.Windows.Forms.RadioButton rdoCustomKey;
+        private System.Windows.Forms.RadioButton rdoUsKey;
+        private System.Windows.Forms.RadioButton rdoUkKey;
+        private System.Windows.Forms.Button cmdChooseMfr;
     }
 }
 
