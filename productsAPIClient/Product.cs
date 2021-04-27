@@ -6,7 +6,7 @@ namespace ProductsAPISampleGenerator
 {
     class Product
     {
-        public ProductDatum[] Data { get; set; }
+        public ProductDatum Data { get; set; }
     }
 
     public partial class ProductDatum

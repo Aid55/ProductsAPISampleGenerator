@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using static System.Windows.Forms.CheckedListBox;
@@ -25,8 +26,6 @@ namespace ProductsAPISampleGenerator
         {
             RestClient rClient = new RestClient();
             rClient.EndPoint = url;
-            txtResponse.Text = string.Empty;
-            DebugOutput("Rest client created successfully");
             if (rdoUkKey.Checked)
             {
                 return(rClient.MakeRequest(ClientConfig.apiKeyName, ClientConfig.apiUkKeyValue));
@@ -39,21 +38,18 @@ namespace ProductsAPISampleGenerator
             {
                 return(rClient.MakeRequest(ClientConfig.apiKeyName, txtAqKeyValue.Text.ToString()));
             }
-            DebugOutput("See response below:");
         }
 
-        private Object DeserializeJson(string strJson)
+        private Product DeserializeProductJson(string strJson)
         {
             try
             {
-                var jsonObject = JsonConvert.DeserializeObject<dynamic>(strJson);
-                return jsonObject.data;
-                //DebugOutput(jsonObject.ToString());
+                var jsonObject = JsonConvert.DeserializeObject<Product>(strJson);
+                return jsonObject;
             }
             catch(Exception ex)
             {
-                return ex.Message.ToString();
-                //DebugOutput("Deserialization problem" + ex.Message.ToString());
+                throw new Exception(ex.Message.ToString());
             }
         }
 
@@ -63,12 +59,10 @@ namespace ProductsAPISampleGenerator
             {
                 var jsonObject = JsonConvert.DeserializeObject<MfrBilling>(strJson);
                 return jsonObject;
-                //DebugOutput(jsonObject.ToString());
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message.ToString());
-                //DebugOutput("Deserialization problem" + ex.Message.ToString());
             }
         }
 
@@ -78,12 +72,10 @@ namespace ProductsAPISampleGenerator
             {
                 var jsonObject = JsonConvert.DeserializeObject<ProductsByMfr>(strJson);
                 return jsonObject;
-                //DebugOutput(jsonObject.ToString());
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message.ToString());
-                //DebugOutput("Deserialization problem" + ex.Message.ToString());
             }
         }
 
@@ -93,54 +85,25 @@ namespace ProductsAPISampleGenerator
             {
                 string jsonString = JsonConvert.SerializeObject(jsonObject);
                 return jsonString;
-                //DebugOutput(jsonString);
             }
             catch (Exception ex)
             {
                 return ex.Message.ToString();
-                //DebugOutput("Serialization problem" + ex.Message.ToString());
             }
         }
 
         private void DebugOutput(string strDebugText)
         {
+            txtResponse.Text = string.Empty;
             System.Diagnostics.Debug.Write(strDebugText + Environment.NewLine);
-            txtResponse.Text += strDebugText + Environment.NewLine;
+            txtResponse.Text += strDebugText;
         }
 
-        private void CmdMfrBillingInfo_Click(object sender, EventArgs e)
-        {
-            strResponse = SendRequest(ClientConfig.billingUrl);
-            DebugOutput(strResponse);
-        }
-
-        private void CmdMfrProducts_Click(object sender, EventArgs e)
-        {
-            strResponse = SendRequest(ClientConfig.mfrProdsUrl + txtMfrId.Text + "/products");
-            DebugOutput(strResponse);
-        }
-
-        private void CmdProduct_Click(object sender, EventArgs e)
-        {
-            strResponse = SendRequest(ClientConfig.prodUrl + txtProdId.Text);
-            DebugOutput(strResponse);
-        }
 
         private void CmdGetProductList_Click(object sender, EventArgs e)
         {
-            string[] prodIds = txtProdIdList.Text.Split(Environment.NewLine);
-            strResponse = "{\"data\":[";
-            string tempString = string.Empty;
-            foreach (string prodId in prodIds)
-            {
-                tempString = SendRequest(ClientConfig.prodUrl + prodId);
-                Object jsonObjectData = DeserializeJson(tempString);
-                string newString = SerializeJson(jsonObjectData);
-                strResponse += newString;
-                strResponse += ",";
-            }
-            strResponse = strResponse.Remove(strResponse.Length - 1, 1);
-            strResponse += "]}";
+            List<string> prodIds = txtProdIdList.Text.Split(Environment.NewLine).ToList();
+            strResponse = buildJsonStringForProductIds(prodIds);
             DebugOutput(strResponse);
         }
 
@@ -164,6 +127,7 @@ namespace ProductsAPISampleGenerator
         }
         private void cmdChooseMfr_Click(object sender, EventArgs e)
         {
+            DebugOutput("Manufacturers found.");
             string mfrsJson = SendRequest(ClientConfig.billingUrl);
             MfrBilling mfrList = DeserializeMfrsJson(mfrsJson);
             checkedListBox1.Items.Clear();
@@ -192,25 +156,23 @@ namespace ProductsAPISampleGenerator
                     {
                         if (mfrFound)
                         {
-                            DebugOutput("leaving outer loop");
                             break;
                         }
                         foreach (string mfr in mfrDict.Keys)
                         {
                             if (mfrFound)
                             {
-                                DebugOutput("Leaving inner loop");
                                 break;
                             }
                             if (item.Equals(mfr))
                             {
-                                DebugOutput("Mfr found" + mfr);
                                 mfrFound = true;
                                 selectedMfr = mfr;
 
                             }
                         }
                     }
+                    DebugOutput(selectedMfr + " products found.");
                     string productsjson = SendRequest(ClientConfig.mfrProdsUrl + mfrDict[selectedMfr] + "/products");
                     ProductsByMfr mfrProducts = DeserializeMfrProductsJson(productsjson);
                     checkedListBox2.Items.Clear();
@@ -249,26 +211,33 @@ namespace ProductsAPISampleGenerator
                     {
                         if(productByMfrDict.ContainsKey(item.ToString()))
                         {
-                            DebugOutput("prodId for product found: " + item.ToString());
                             prodIds.Add(productByMfrDict[item.ToString()]);
-
                         }
                     }
-                    strResponse = "{\"data\":[";
-                    string tempString = string.Empty;
-                    foreach (string prodId in prodIds)
-                    {
-                        tempString = SendRequest(ClientConfig.prodUrl + prodId);
-                        Object jsonObjectData = DeserializeJson(tempString);
-                        string newString = SerializeJson(jsonObjectData);
-                        strResponse += newString;
-                        strResponse += ",";
-                    }
-                    strResponse = strResponse.Remove(strResponse.Length - 1, 1);
-                    strResponse += "]}";
+                    strResponse = buildJsonStringForProductIds(prodIds);
                     DebugOutput(strResponse);
                 }
             }
         }
+
+        private string buildJsonStringForProductIds(List<string> prodIds)
+        {
+            DebugOutput("Building Sample Data");
+            string tempString = string.Empty;
+            string returnStr = "{\"data\":[";
+            foreach (string prodId in prodIds)
+            {
+                tempString = SendRequest(ClientConfig.prodUrl + prodId);
+                Product jsonObjectData = DeserializeProductJson(tempString);
+                string newString = SerializeJson(jsonObjectData.Data);
+                returnStr += newString;
+                returnStr += ",";
+            }
+            returnStr = returnStr.Remove(returnStr.Length - 1, 1);
+            returnStr += "]}";
+            return returnStr;
+        }
+
+
     }
 }
