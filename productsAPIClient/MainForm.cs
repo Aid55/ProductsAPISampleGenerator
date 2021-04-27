@@ -238,6 +238,22 @@ namespace ProductsAPISampleGenerator
             return returnStr;
         }
 
+        private void uncheckAllItems(CheckedListBox clb)
+        {
+            while (clb.CheckedIndices.Count > 0)
+            {
+                clb.SetItemChecked(clb.CheckedIndices[0], false);
+            }
+        }
 
+        private void cmdUncheckMfrs_Click(object sender, EventArgs e)
+        {
+            uncheckAllItems(checkedListBox1);
+        }
+
+        private void cmdUncheckProducts_Click(object sender, EventArgs e)
+        {
+            uncheckAllItems(checkedListBox2);
+        }
     }
 }
