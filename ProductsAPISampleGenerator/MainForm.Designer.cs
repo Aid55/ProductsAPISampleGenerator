@@ -31,9 +31,9 @@ namespace ProductsAPISampleGenerator
         {
             this.txtResponse = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.cmdGetProductList = new System.Windows.Forms.Button();
+            this.cmdGetCustomProdIds = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
-            this.txtProdIdList = new System.Windows.Forms.TextBox();
+            this.txtCustomProdIds = new System.Windows.Forms.TextBox();
             this.cmdJsonExport = new System.Windows.Forms.Button();
             this.cmdChooseMfr = new System.Windows.Forms.Button();
             this.cmdChooseProds = new System.Windows.Forms.Button();
@@ -71,15 +71,15 @@ namespace ProductsAPISampleGenerator
             this.label2.Tag = "";
             this.label2.Text = "Response:";
             // 
-            // cmdGetProductList
+            // cmdGetCustomProdIds
             // 
-            this.cmdGetProductList.Location = new System.Drawing.Point(299, 23);
-            this.cmdGetProductList.Name = "cmdGetProductList";
-            this.cmdGetProductList.Size = new System.Drawing.Size(82, 88);
-            this.cmdGetProductList.TabIndex = 15;
-            this.cmdGetProductList.Text = "GET data for custom Ids";
-            this.cmdGetProductList.UseVisualStyleBackColor = true;
-            this.cmdGetProductList.Click += new System.EventHandler(this.CmdGetProductList_Click);
+            this.cmdGetCustomProdIds.Location = new System.Drawing.Point(299, 23);
+            this.cmdGetCustomProdIds.Name = "cmdGetCustomProdIds";
+            this.cmdGetCustomProdIds.Size = new System.Drawing.Size(82, 88);
+            this.cmdGetCustomProdIds.TabIndex = 15;
+            this.cmdGetCustomProdIds.Text = "GET data for custom Ids";
+            this.cmdGetCustomProdIds.UseVisualStyleBackColor = true;
+            this.cmdGetCustomProdIds.Click += new System.EventHandler(this.CmdGetCustomProdIds_Click);
             // 
             // label9
             // 
@@ -92,15 +92,15 @@ namespace ProductsAPISampleGenerator
             this.label9.TabIndex = 24;
             this.label9.Text = "Add 1 GUID per line. No comma\'s or spaces";
             // 
-            // txtProdIdList
+            // txtCustomProdIds
             // 
-            this.txtProdIdList.Location = new System.Drawing.Point(11, 23);
-            this.txtProdIdList.Multiline = true;
-            this.txtProdIdList.Name = "txtProdIdList";
-            this.txtProdIdList.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtProdIdList.Size = new System.Drawing.Size(282, 88);
-            this.txtProdIdList.TabIndex = 15;
-            this.txtProdIdList.Text = "0a646254-e0c1-df11-83ce-00304834ecff\r\n0d646254-e0c1-df11-83ce-00304834ecff";
+            this.txtCustomProdIds.Location = new System.Drawing.Point(11, 23);
+            this.txtCustomProdIds.Multiline = true;
+            this.txtCustomProdIds.Name = "txtCustomProdIds";
+            this.txtCustomProdIds.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtCustomProdIds.Size = new System.Drawing.Size(282, 88);
+            this.txtCustomProdIds.TabIndex = 15;
+            this.txtCustomProdIds.Text = "0a646254-e0c1-df11-83ce-00304834ecff\r\n0d646254-e0c1-df11-83ce-00304834ecff";
             // 
             // cmdJsonExport
             // 
@@ -217,8 +217,8 @@ namespace ProductsAPISampleGenerator
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.txtProdIdList);
-            this.groupBox1.Controls.Add(this.cmdGetProductList);
+            this.groupBox1.Controls.Add(this.txtCustomProdIds);
+            this.groupBox1.Controls.Add(this.cmdGetCustomProdIds);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Location = new System.Drawing.Point(277, 12);
             this.groupBox1.Name = "groupBox1";
@@ -279,9 +279,9 @@ namespace ProductsAPISampleGenerator
         private System.Windows.Forms.TextBox txtResponse;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button cmdJsonExport;
-        private System.Windows.Forms.TextBox txtProdIdList;
+        private System.Windows.Forms.TextBox txtCustomProdIds;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Button cmdGetProductList;
+        private System.Windows.Forms.Button cmdGetCustomProdIds;
         private System.Windows.Forms.Button cmdChooseMfr;
         private System.Windows.Forms.Button cmdChooseProds;
         private System.Windows.Forms.CheckedListBox checkedListBox1;

@@ -16,13 +16,17 @@ namespace ProductsAPISampleGenerator
         string strResponse = string.Empty;
         SortedDictionary<string, string> mfrDict;
         SortedDictionary<string, string> productByMfrDict;
-        Boolean isTaskRunning = false;
-
         public MainForm()
+
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Sends a GET request to the URL
+        /// </summary>
+        /// <param name="url">The URL for the API request</param>
+        /// <returns>A JSON data string from the API</returns>
         private string SendRequest(string url)
         {
             RestClient rClient = new RestClient();
@@ -41,6 +45,11 @@ namespace ProductsAPISampleGenerator
             }
         }
 
+        /// <summary>
+        /// Turns JSON string into a Product object representing a catalogue product
+        /// </summary>
+        /// <param name="strJson">JSON string for an API product</param>
+        /// <returns>A Product object</returns>
         private Product DeserializeProductJson(string strJson)
         {
             try
@@ -54,6 +63,11 @@ namespace ProductsAPISampleGenerator
             }
         }
 
+        /// <summary>
+        /// Turns JSON string into a MfrBilling object representing a list of the mfrs available
+        /// </summary>
+        /// <param name="strJson">JSON string of the available Mfrs</param>
+        /// <returns>A MfrBilling object</returns>
         private MfrBilling DeserializeMfrsJson(string strJson)
         {
             try
@@ -67,6 +81,11 @@ namespace ProductsAPISampleGenerator
             }
         }
 
+        /// <summary>
+        /// Turns JSON string into a ProductsByMfr object representing a list of products under a mfr
+        /// </summary>
+        /// <param name="strJson">JSON string of the products under a mfr</param>
+        /// <returns>A ProductsByMfr object</returns>
         private ProductsByMfr DeserializeMfrProductsJson(string strJson)
         {
             try
@@ -80,6 +99,11 @@ namespace ProductsAPISampleGenerator
             }
         }
 
+        /// <summary>
+        /// Turns a JSON object back into a string
+        /// </summary>
+        /// <param name="jsonObject">A JSON object</param>
+        /// <returns>A JSON string representing the object</returns>
         private string SerializeJson(Object jsonObject)
         {
             try
@@ -93,6 +117,10 @@ namespace ProductsAPISampleGenerator
             }
         }
 
+        /// <summary>
+        /// Outputs the parameter text to the UI
+        /// </summary>
+        /// <param name="strDebugText">String to print on the UI</param>
         private void DebugOutput(string strDebugText)
         {
             txtResponse.Text = string.Empty;
@@ -100,18 +128,49 @@ namespace ProductsAPISampleGenerator
             txtResponse.Text += strDebugText;
         }
 
-
-        private void CmdGetProductList_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Splits the custom product Id's into a List and concatenates them into one string to display on the UI
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CmdGetCustomProdIds_Click(object sender, EventArgs e)
         {
-            List<string> prodIds = txtProdIdList.Text.Split(Environment.NewLine).ToList();
+            List<string> prodIds = txtCustomProdIds.Text.Split(Environment.NewLine).ToList();
             strResponse = buildJsonStringForProductIds(prodIds);
             DebugOutput(strResponse);
         }
 
-            private void cmdChooseMfr_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Takes a List object of productId strings, calls the API for each and concatenates all responses into one JSON string
+        /// </summary>
+        /// <param name="prodIds">List object of productId strings</param>
+        /// <returns>A JSON string representing all of the products in the List</returns>
+        private string buildJsonStringForProductIds(List<string> prodIds)
         {
-            isTaskRunning = true;
-            DebugOutput("Manufacturers found.");
+            DebugOutput("Building Sample Data");
+            string tempString = string.Empty;
+            string returnStr = "{\"data\":[";
+            foreach (string prodId in prodIds)
+            {
+                tempString = SendRequest(ClientConfig.prodUrl + prodId);
+                Product jsonObjectData = DeserializeProductJson(tempString);
+                string newString = SerializeJson(jsonObjectData.Data);
+                returnStr += newString;
+                returnStr += ",";
+            }
+            returnStr = returnStr.Remove(returnStr.Length - 1, 1);
+            returnStr += "]}";
+            return returnStr;
+        }
+
+        /// <summary>
+        /// Gets a list of Mfrs and displays them on the UI
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void cmdChooseMfr_Click(object sender, EventArgs e)
+        {
+            DebugOutput("Pulling list of Manufacturers.");
             string mfrsJson = SendRequest(ClientConfig.billingUrl);
             MfrBilling mfrList = DeserializeMfrsJson(mfrsJson);
             checkedListBox1.Items.Clear();
@@ -126,6 +185,11 @@ namespace ProductsAPISampleGenerator
             }
         }
 
+        /// <summary>
+        /// Gets a list of products for the selected mfr and displays them on the UI
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cmdChooseProds_Click(object sender, EventArgs e)
         {
             if (checkedListBox1.CheckedItems.Count != 0)
@@ -155,7 +219,7 @@ namespace ProductsAPISampleGenerator
                             }
                         }
                     }
-                    DebugOutput(selectedMfr + " products found.");
+                    DebugOutput("Pulling product list for " + selectedMfr + ".");
                     string productsjson = SendRequest(ClientConfig.mfrProdsUrl + mfrDict[selectedMfr] + "/products");
                     ProductsByMfr mfrProducts = DeserializeMfrProductsJson(productsjson);
                     checkedListBox2.Items.Clear();
@@ -164,14 +228,19 @@ namespace ProductsAPISampleGenerator
                     {
                         productByMfrDict.Add(prod.Models.MfrModel, prod.ProductId.ToString());
                     }
-                    foreach (string prod in productByMfrDict.Keys)
+                    foreach (string modelNo in productByMfrDict.Keys)
                     {
-                        checkedListBox2.Items.Add(prod);
+                        checkedListBox2.Items.Add(modelNo);
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// Gets the JSON string for each selected product and concatenates them into one string to display on the UI
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cmdGetSelectedProducts_Click(object sender, EventArgs e)
         {
             if (checkedListBox2.CheckedItems.Count != 0)
@@ -193,6 +262,11 @@ namespace ProductsAPISampleGenerator
             }
         }
 
+        /// <summary>
+        /// Exports the JSON string held in the strResponse variable to a JSON file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CmdJsonExport_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
@@ -212,6 +286,11 @@ namespace ProductsAPISampleGenerator
             }
         }
 
+        /// <summary>
+        /// Checks if there is already a selected mfr in the mfr list and deselects it before new mfr is selected
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             CheckedListBox.CheckedIndexCollection checkedIndices = checkedListBox1.CheckedIndices;
@@ -222,26 +301,10 @@ namespace ProductsAPISampleGenerator
             }
         }
 
-        
-
-        private string buildJsonStringForProductIds(List<string> prodIds)
-        {
-            DebugOutput("Building Sample Data");
-            string tempString = string.Empty;
-            string returnStr = "{\"data\":[";
-            foreach (string prodId in prodIds)
-            {
-                tempString = SendRequest(ClientConfig.prodUrl + prodId);
-                Product jsonObjectData = DeserializeProductJson(tempString);
-                string newString = SerializeJson(jsonObjectData.Data);
-                returnStr += newString;
-                returnStr += ",";
-            }
-            returnStr = returnStr.Remove(returnStr.Length - 1, 1);
-            returnStr += "]}";
-            return returnStr;
-        }
-
+        /// <summary>
+        /// Deselects all boxes in the CheckedListBox parameter
+        /// </summary>
+        /// <param name="clb"></param>
         private void uncheckAllItems(CheckedListBox clb)
         {
             while (clb.CheckedIndices.Count > 0)
@@ -250,11 +313,21 @@ namespace ProductsAPISampleGenerator
             }
         }
 
+        /// <summary>
+        /// Deselects all Mfrs in the Mfr checklist
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cmdUncheckMfrs_Click(object sender, EventArgs e)
         {
             uncheckAllItems(checkedListBox1);
         }
 
+        /// <summary>
+        /// Deselects all Products in the Products checklist
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cmdUncheckProducts_Click(object sender, EventArgs e)
         {
             uncheckAllItems(checkedListBox2);
