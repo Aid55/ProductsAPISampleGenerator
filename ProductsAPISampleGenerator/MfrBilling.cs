@@ -12,7 +12,7 @@ namespace ProductsAPISampleGenerator
 
     public partial class MfrBillingDatum
     {
-        public Guid MfrId { get; set; }
+        public Guid? MfrId { get; set; }
         public string MfrName { get; set; }
         public long BillableProductsCount { get; set; }
     }

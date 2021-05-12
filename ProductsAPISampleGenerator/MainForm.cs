@@ -68,11 +68,11 @@ namespace ProductsAPISampleGenerator
         /// </summary>
         /// <param name="strJson">JSON string of the available Mfrs</param>
         /// <returns>A MfrBilling object</returns>
-        private MfrBilling DeserializeMfrsJson(string strJson)
+        private Manufacturers DeserializeMfrsJson(string strJson)
         {
             try
             {
-                var jsonObject = JsonConvert.DeserializeObject<MfrBilling>(strJson);
+                var jsonObject = JsonConvert.DeserializeObject<Manufacturers>(strJson);
                 return jsonObject;
             }
             catch (Exception ex)
@@ -171,13 +171,13 @@ namespace ProductsAPISampleGenerator
         private void cmdChooseMfr_Click(object sender, EventArgs e)
         {
             DebugOutput("Pulling list of Manufacturers.");
-            string mfrsJson = SendRequest(ClientConfig.billingUrl);
-            MfrBilling mfrList = DeserializeMfrsJson(mfrsJson);
+            string mfrsJson = SendRequest(ClientConfig.manufacturersUrl);
+            Manufacturers mfrList = DeserializeMfrsJson(mfrsJson);
             checkedListBox1.Items.Clear();
             mfrDict = new SortedDictionary<string,string>();
-            foreach (MfrBillingDatum mfr in mfrList.Data)
+            foreach (ManufacturersDatum mfr in mfrList.Data)
             {
-                mfrDict.Add(mfr.MfrName, mfr.MfrId.ToString());
+                mfrDict.Add(mfr.MfrShortName, mfr.MfrId.ToString());
             }
             foreach (string mfr in mfrDict.Keys) 
             {
