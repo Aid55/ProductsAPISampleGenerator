@@ -49,6 +49,9 @@ namespace ProductsAPISampleGenerator
             this.cmdUncheckMfrs = new System.Windows.Forms.Button();
             this.cmdUncheckProducts = new System.Windows.Forms.Button();
             this.bgw_getMfrs = new System.ComponentModel.BackgroundWorker();
+            this.bgw_getProds = new System.ComponentModel.BackgroundWorker();
+            this.bgw_createJson = new System.ComponentModel.BackgroundWorker();
+            this.bgw_getCustom = new System.ComponentModel.BackgroundWorker();
             this.groupBoxApiKeyType.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -253,6 +256,21 @@ namespace ProductsAPISampleGenerator
             this.bgw_getMfrs.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgw_getMfrs_DoWork);
             this.bgw_getMfrs.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgw_getMfrs_RunWorkerCompleted);
             // 
+            // bgw_getProds
+            // 
+            this.bgw_getProds.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgw_getProds_DoWork);
+            this.bgw_getProds.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgw_getProds_RunWorkerCompleted);
+            // 
+            // bgw_createJson
+            // 
+            this.bgw_createJson.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgw_createJson_DoWork);
+            this.bgw_createJson.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgw_createJson_RunWorkerCompleted);
+            // 
+            // bgw_getCustom
+            // 
+            this.bgw_getCustom.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgw_getCustom_DoWork);
+            this.bgw_getCustom.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgw_getCustom_RunWorkerCompleted);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -302,6 +320,9 @@ namespace ProductsAPISampleGenerator
         private System.Windows.Forms.Button cmdUncheckMfrs;
         private System.Windows.Forms.Button cmdUncheckProducts;
         private System.ComponentModel.BackgroundWorker bgw_getMfrs;
+        private System.ComponentModel.BackgroundWorker bgw_getProds;
+        private System.ComponentModel.BackgroundWorker bgw_createJson;
+        private System.ComponentModel.BackgroundWorker bgw_getCustom;
     }
 }
 

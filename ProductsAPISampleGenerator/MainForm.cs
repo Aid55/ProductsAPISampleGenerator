@@ -17,11 +17,11 @@ namespace ProductsAPISampleGenerator
         string strResponse = string.Empty;
         SortedDictionary<string, string> mfrDict;
         SortedDictionary<string, string> productByMfrDict;
+        private delegate void SafeCallDelegate(string text);
         public MainForm()
 
         {
             InitializeComponent();
-            bgw_getMfrs.WorkerReportsProgress = true;
         }
 
         /// <summary>
@@ -125,9 +125,17 @@ namespace ProductsAPISampleGenerator
         /// <param name="strDebugText">String to print on the UI</param>
         private void DebugOutput(string strDebugText)
         {
-            txtResponse.Text = string.Empty;
-            System.Diagnostics.Debug.Write(strDebugText + Environment.NewLine);
-            txtResponse.Text += strDebugText;
+            if (txtResponse.InvokeRequired)
+            {
+                var d = new SafeCallDelegate(DebugOutput);
+                txtResponse.Invoke(d, new object[] { strDebugText });
+            }
+            else
+            {
+                txtResponse.Text = string.Empty;
+                System.Diagnostics.Debug.Write(strDebugText + Environment.NewLine);
+                txtResponse.Text += strDebugText;
+            }
         }
 
         /// <summary>
@@ -137,10 +145,22 @@ namespace ProductsAPISampleGenerator
         /// <param name="e"></param>
         private void CmdGetCustomProdIds_Click(object sender, EventArgs e)
         {
-            Cursor.Current = Cursors.WaitCursor;
-            List<string> prodIds = txtCustomProdIds.Text.Split(Environment.NewLine).ToList();
-            strResponse = buildJsonStringForProductIds(prodIds);
+            if (!bgw_getCustom.IsBusy)
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                List<string> prodIds = txtCustomProdIds.Text.Split(Environment.NewLine).ToList();
+                bgw_getCustom.RunWorkerAsync(prodIds);
+            }
+        }
+
+        private void bgw_getCustom_DoWork(object sender, DoWorkEventArgs e)
+        {
+            strResponse = buildJsonStringForProductIds((List<string>)e.Argument);
             DebugOutput(strResponse);
+        }
+
+        private void bgw_getCustom_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
             Cursor.Current = Cursors.Default;
         }
 
@@ -178,6 +198,8 @@ namespace ProductsAPISampleGenerator
             {
                 Cursor.Current = Cursors.WaitCursor;
                 DebugOutput("Pulling list of Manufacturers.");
+                checkedListBox1.Items.Clear();
+                checkedListBox2.Items.Clear();
                 bgw_getMfrs.RunWorkerAsync();
             }
         }
@@ -190,8 +212,6 @@ namespace ProductsAPISampleGenerator
 
         private void bgw_getMfrs_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) 
         {
-            checkedListBox1.Items.Clear();
-            checkedListBox2.Items.Clear();
             Manufacturers mfrList = DeserializeMfrsJson((string)e.Result);
             mfrDict = new SortedDictionary<string,string>();
             foreach (ManufacturersDatum mfr in mfrList.Data)
@@ -212,49 +232,59 @@ namespace ProductsAPISampleGenerator
         /// <param name="e"></param>
         private void cmdChooseProds_Click(object sender, EventArgs e)
         {
-            Cursor.Current = Cursors.WaitCursor;
-            if (checkedListBox1.CheckedItems.Count != 0)
+            if (!bgw_getProds.IsBusy)
             {
-                if (mfrDict != null)
+                Cursor.Current = Cursors.WaitCursor;
+                if (checkedListBox1.CheckedItems.Count != 0)
                 {
-
-                    Boolean mfrFound = false;
-                    string selectedMfr = string.Empty;
-                    productByMfrDict = new SortedDictionary<string, string>();
-                    checkedListBox2.Items.Clear();
-                    foreach (Object item in checkedListBox1.CheckedItems)
+                    if (mfrDict != null)
                     {
-                        mfrFound = false;
-                        foreach (string mfr in mfrDict.Keys)
-                        {
-                            if (mfrFound)
-                            {
-                                break;
-                            }
-                            if (item.Equals(mfr))
-                            {
-                                mfrFound = true;
-                                selectedMfr = mfr;
-                            }
-                        }
-                        DebugOutput("Pulling product list for " + selectedMfr + ".");
-                        string productsjson = SendRequest(ClientConfig.mfrProdsUrl + mfrDict[selectedMfr] + "/products");
-                        ProductsByMfr mfrProducts = DeserializeMfrProductsJson(productsjson);
-                        if(mfrProducts.Data != null)
-                        {
-                            foreach (ProductsByMfrDatum prod in mfrProducts.Data)
-                            {
-                                productByMfrDict.Add(selectedMfr + " " + prod.Models.MfrModel, prod.ProductId.ToString());
-                            }
-                        }
+                        productByMfrDict = new SortedDictionary<string, string>();
+                        checkedListBox2.Items.Clear();
+                        bgw_getProds.RunWorkerAsync();
                     }
-                    DebugOutput("Finished pulling products");
-                    foreach (string modelNo in productByMfrDict.Keys)
-                    {
-                        checkedListBox2.Items.Add(modelNo);
-                    }
-
                 }
+            }
+        }
+
+        private void bgw_getProds_DoWork(object sender, DoWorkEventArgs e)
+        {
+            foreach (Object item in checkedListBox1.CheckedItems)
+            {
+                Boolean mfrFound = false;
+                string selectedMfr = string.Empty;
+                mfrFound = false;
+                foreach (string mfr in mfrDict.Keys)
+                {
+                    if (mfrFound)
+                    {
+                        break;
+                    }
+                    if (item.Equals(mfr))
+                    {
+                        mfrFound = true;
+                        selectedMfr = mfr;
+                    }
+                }
+                DebugOutput("Pulling product list for " + selectedMfr + ".");
+                string productsjson = SendRequest(ClientConfig.mfrProdsUrl + mfrDict[selectedMfr] + "/products");
+                ProductsByMfr mfrProducts = DeserializeMfrProductsJson(productsjson);
+                if (mfrProducts.Data != null)
+                {
+                    foreach (ProductsByMfrDatum prod in mfrProducts.Data)
+                    {
+                        productByMfrDict.Add(selectedMfr + " " + prod.Models.MfrModel, prod.ProductId.ToString());
+                    }
+                }
+            }
+        }
+
+        private void bgw_getProds_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            DebugOutput("Finished pulling products");
+            foreach (string modelNo in productByMfrDict.Keys)
+            {
+                checkedListBox2.Items.Add(modelNo);
             }
             Cursor.Current = Cursors.Default;
         }
@@ -266,24 +296,38 @@ namespace ProductsAPISampleGenerator
         /// <param name="e"></param>
         private void cmdGetSelectedProducts_Click(object sender, EventArgs e)
         {
-            Cursor.Current = Cursors.WaitCursor;
-            if (checkedListBox2.CheckedItems.Count != 0)
+            if (!bgw_createJson.IsBusy)
             {
-                if (productByMfrDict != null)
+                Cursor.Current = Cursors.WaitCursor;
+                if (checkedListBox2.CheckedItems.Count != 0)
                 {
-
-                    List<string> prodIds = new List<string>();
-                    foreach (Object item in checkedListBox2.CheckedItems)
+                    if (productByMfrDict != null)
                     {
-                        if (productByMfrDict.ContainsKey(item.ToString()))
+
+                        List<string> prodIds = new List<string>();
+                        foreach (Object item in checkedListBox2.CheckedItems)
                         {
-                            prodIds.Add(productByMfrDict[item.ToString()]);
+                            if (productByMfrDict.ContainsKey(item.ToString()))
+                            {
+                                prodIds.Add(productByMfrDict[item.ToString()]);
+                            }
                         }
+                        bgw_createJson.RunWorkerAsync(prodIds);
+                        
                     }
-                    strResponse = buildJsonStringForProductIds(prodIds);
-                    DebugOutput(strResponse);
                 }
+                
             }
+        }
+
+        private void bgw_createJson_DoWork(object sender, DoWorkEventArgs e)
+        {
+            strResponse = buildJsonStringForProductIds((List<string>)e.Argument);
+            DebugOutput(strResponse);
+        }
+
+        private void bgw_createJson_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
             Cursor.Current = Cursors.Default;
         }
 
@@ -357,5 +401,7 @@ namespace ProductsAPISampleGenerator
         {
             uncheckAllItems(checkedListBox2);
         }
+
+
     }
 }
