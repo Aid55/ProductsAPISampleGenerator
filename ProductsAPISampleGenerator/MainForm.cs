@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,7 @@ namespace ProductsAPISampleGenerator
 
         {
             InitializeComponent();
+            bgw_getMfrs.WorkerReportsProgress = true;
         }
 
         /// <summary>
@@ -135,9 +137,11 @@ namespace ProductsAPISampleGenerator
         /// <param name="e"></param>
         private void CmdGetCustomProdIds_Click(object sender, EventArgs e)
         {
+            Cursor.Current = Cursors.WaitCursor;
             List<string> prodIds = txtCustomProdIds.Text.Split(Environment.NewLine).ToList();
             strResponse = buildJsonStringForProductIds(prodIds);
             DebugOutput(strResponse);
+            Cursor.Current = Cursors.Default;
         }
 
         /// <summary>
@@ -170,10 +174,25 @@ namespace ProductsAPISampleGenerator
         /// <param name="e"></param>
         private void cmdChooseMfr_Click(object sender, EventArgs e)
         {
-            DebugOutput("Pulling list of Manufacturers.");
+            if (!bgw_getMfrs.IsBusy)
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                DebugOutput("Pulling list of Manufacturers.");
+                bgw_getMfrs.RunWorkerAsync();
+            }
+        }
+
+        private void bgw_getMfrs_DoWork(object sender, DoWorkEventArgs e)
+        {
             string mfrsJson = SendRequest(ClientConfig.manufacturersUrl);
-            Manufacturers mfrList = DeserializeMfrsJson(mfrsJson);
+            e.Result = mfrsJson;
+        }
+
+        private void bgw_getMfrs_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) 
+        {
             checkedListBox1.Items.Clear();
+            checkedListBox2.Items.Clear();
+            Manufacturers mfrList = DeserializeMfrsJson((string)e.Result);
             mfrDict = new SortedDictionary<string,string>();
             foreach (ManufacturersDatum mfr in mfrList.Data)
             {
@@ -183,6 +202,7 @@ namespace ProductsAPISampleGenerator
             {
                 checkedListBox1.Items.Add(mfr);
             }
+            Cursor.Current = Cursors.Default;
         }
 
         /// <summary>
@@ -192,6 +212,7 @@ namespace ProductsAPISampleGenerator
         /// <param name="e"></param>
         private void cmdChooseProds_Click(object sender, EventArgs e)
         {
+            Cursor.Current = Cursors.WaitCursor;
             if (checkedListBox1.CheckedItems.Count != 0)
             {
                 if (mfrDict != null)
@@ -199,12 +220,11 @@ namespace ProductsAPISampleGenerator
 
                     Boolean mfrFound = false;
                     string selectedMfr = string.Empty;
+                    productByMfrDict = new SortedDictionary<string, string>();
+                    checkedListBox2.Items.Clear();
                     foreach (Object item in checkedListBox1.CheckedItems)
                     {
-                        if (mfrFound)
-                        {
-                            break;
-                        }
+                        mfrFound = false;
                         foreach (string mfr in mfrDict.Keys)
                         {
                             if (mfrFound)
@@ -215,25 +235,28 @@ namespace ProductsAPISampleGenerator
                             {
                                 mfrFound = true;
                                 selectedMfr = mfr;
-
+                            }
+                        }
+                        DebugOutput("Pulling product list for " + selectedMfr + ".");
+                        string productsjson = SendRequest(ClientConfig.mfrProdsUrl + mfrDict[selectedMfr] + "/products");
+                        ProductsByMfr mfrProducts = DeserializeMfrProductsJson(productsjson);
+                        if(mfrProducts.Data != null)
+                        {
+                            foreach (ProductsByMfrDatum prod in mfrProducts.Data)
+                            {
+                                productByMfrDict.Add(selectedMfr + " " + prod.Models.MfrModel, prod.ProductId.ToString());
                             }
                         }
                     }
-                    DebugOutput("Pulling product list for " + selectedMfr + ".");
-                    string productsjson = SendRequest(ClientConfig.mfrProdsUrl + mfrDict[selectedMfr] + "/products");
-                    ProductsByMfr mfrProducts = DeserializeMfrProductsJson(productsjson);
-                    checkedListBox2.Items.Clear();
-                    productByMfrDict = new SortedDictionary<string, string>();
-                    foreach (ProductsByMfrDatum prod in mfrProducts.Data)
-                    {
-                        productByMfrDict.Add(prod.Models.MfrModel, prod.ProductId.ToString());
-                    }
+                    DebugOutput("Finished pulling products");
                     foreach (string modelNo in productByMfrDict.Keys)
                     {
                         checkedListBox2.Items.Add(modelNo);
                     }
+
                 }
             }
+            Cursor.Current = Cursors.Default;
         }
 
         /// <summary>
@@ -243,6 +266,7 @@ namespace ProductsAPISampleGenerator
         /// <param name="e"></param>
         private void cmdGetSelectedProducts_Click(object sender, EventArgs e)
         {
+            Cursor.Current = Cursors.WaitCursor;
             if (checkedListBox2.CheckedItems.Count != 0)
             {
                 if (productByMfrDict != null)
@@ -260,6 +284,7 @@ namespace ProductsAPISampleGenerator
                     DebugOutput(strResponse);
                 }
             }
+            Cursor.Current = Cursors.Default;
         }
 
         /// <summary>
@@ -287,18 +312,18 @@ namespace ProductsAPISampleGenerator
         }
 
         /// <summary>
-        /// Checks if there is already a selected mfr in the mfr list and deselects it before new mfr is selected
+        /// Limits Mfr selection to 1 Mfr
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            CheckedListBox.CheckedIndexCollection checkedIndices = checkedListBox1.CheckedIndices;
-
-            if (checkedIndices.Count > 0 && checkedIndices[0] != e.Index)
-            {
-                checkedListBox1.SetItemChecked(checkedIndices[0], false);
-            }
+            //CheckedListBox.CheckedIndexCollection checkedIndices = checkedListBox1.CheckedIndices;
+            //
+            //if (checkedIndices.Count > 0 && checkedIndices[0] != e.Index)
+            //{
+            //    checkedListBox1.SetItemChecked(checkedIndices[0], false);
+            //}
         }
 
         /// <summary>

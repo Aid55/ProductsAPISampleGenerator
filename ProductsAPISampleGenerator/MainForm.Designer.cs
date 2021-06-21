@@ -48,23 +48,24 @@ namespace ProductsAPISampleGenerator
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cmdUncheckMfrs = new System.Windows.Forms.Button();
             this.cmdUncheckProducts = new System.Windows.Forms.Button();
+            this.bgw_getMfrs = new System.ComponentModel.BackgroundWorker();
             this.groupBoxApiKeyType.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtResponse
             // 
-            this.txtResponse.Location = new System.Drawing.Point(394, 200);
+            this.txtResponse.Location = new System.Drawing.Point(497, 182);
             this.txtResponse.Multiline = true;
             this.txtResponse.Name = "txtResponse";
             this.txtResponse.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtResponse.Size = new System.Drawing.Size(270, 297);
+            this.txtResponse.Size = new System.Drawing.Size(270, 312);
             this.txtResponse.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(394, 182);
+            this.label2.Location = new System.Drawing.Point(497, 164);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(60, 15);
             this.label2.TabIndex = 4;
@@ -75,7 +76,7 @@ namespace ProductsAPISampleGenerator
             // 
             this.cmdGetCustomProdIds.Location = new System.Drawing.Point(299, 23);
             this.cmdGetCustomProdIds.Name = "cmdGetCustomProdIds";
-            this.cmdGetCustomProdIds.Size = new System.Drawing.Size(82, 88);
+            this.cmdGetCustomProdIds.Size = new System.Drawing.Size(82, 77);
             this.cmdGetCustomProdIds.TabIndex = 15;
             this.cmdGetCustomProdIds.Text = "GET data for custom Ids";
             this.cmdGetCustomProdIds.UseVisualStyleBackColor = true;
@@ -86,7 +87,7 @@ namespace ProductsAPISampleGenerator
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label9.ForeColor = System.Drawing.Color.Crimson;
-            this.label9.Location = new System.Drawing.Point(26, 112);
+            this.label9.Location = new System.Drawing.Point(25, 96);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(246, 15);
             this.label9.TabIndex = 24;
@@ -94,17 +95,17 @@ namespace ProductsAPISampleGenerator
             // 
             // txtCustomProdIds
             // 
-            this.txtCustomProdIds.Location = new System.Drawing.Point(11, 23);
+            this.txtCustomProdIds.Location = new System.Drawing.Point(11, 22);
             this.txtCustomProdIds.Multiline = true;
             this.txtCustomProdIds.Name = "txtCustomProdIds";
             this.txtCustomProdIds.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtCustomProdIds.Size = new System.Drawing.Size(282, 88);
+            this.txtCustomProdIds.Size = new System.Drawing.Size(282, 74);
             this.txtCustomProdIds.TabIndex = 15;
             this.txtCustomProdIds.Text = "0a646254-e0c1-df11-83ce-00304834ecff\r\n0d646254-e0c1-df11-83ce-00304834ecff";
             // 
             // cmdJsonExport
             // 
-            this.cmdJsonExport.Location = new System.Drawing.Point(394, 500);
+            this.cmdJsonExport.Location = new System.Drawing.Point(497, 500);
             this.cmdJsonExport.Name = "cmdJsonExport";
             this.cmdJsonExport.Size = new System.Drawing.Size(270, 42);
             this.cmdJsonExport.TabIndex = 14;
@@ -114,9 +115,9 @@ namespace ProductsAPISampleGenerator
             // 
             // cmdChooseMfr
             // 
-            this.cmdChooseMfr.Location = new System.Drawing.Point(12, 151);
+            this.cmdChooseMfr.Location = new System.Drawing.Point(12, 133);
             this.cmdChooseMfr.Name = "cmdChooseMfr";
-            this.cmdChooseMfr.Size = new System.Drawing.Size(185, 28);
+            this.cmdChooseMfr.Size = new System.Drawing.Size(204, 28);
             this.cmdChooseMfr.TabIndex = 15;
             this.cmdChooseMfr.Text = "2. GET manufacturer list";
             this.cmdChooseMfr.UseVisualStyleBackColor = true;
@@ -124,9 +125,9 @@ namespace ProductsAPISampleGenerator
             // 
             // cmdChooseProds
             // 
-            this.cmdChooseProds.Location = new System.Drawing.Point(203, 151);
+            this.cmdChooseProds.Location = new System.Drawing.Point(221, 132);
             this.cmdChooseProds.Name = "cmdChooseProds";
-            this.cmdChooseProds.Size = new System.Drawing.Size(185, 28);
+            this.cmdChooseProds.Size = new System.Drawing.Size(269, 28);
             this.cmdChooseProds.TabIndex = 16;
             this.cmdChooseProds.Text = "3. GET prods for selected mfr";
             this.cmdChooseProds.UseVisualStyleBackColor = true;
@@ -137,9 +138,9 @@ namespace ProductsAPISampleGenerator
             this.checkedListBox1.CheckOnClick = true;
             this.checkedListBox1.FormattingEnabled = true;
             this.checkedListBox1.HorizontalScrollbar = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(12, 185);
+            this.checkedListBox1.Location = new System.Drawing.Point(12, 167);
             this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(185, 328);
+            this.checkedListBox1.Size = new System.Drawing.Size(204, 346);
             this.checkedListBox1.TabIndex = 17;
             this.checkedListBox1.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBox1_ItemCheck);
             // 
@@ -148,14 +149,14 @@ namespace ProductsAPISampleGenerator
             this.checkedListBox2.CheckOnClick = true;
             this.checkedListBox2.FormattingEnabled = true;
             this.checkedListBox2.HorizontalScrollbar = true;
-            this.checkedListBox2.Location = new System.Drawing.Point(203, 185);
+            this.checkedListBox2.Location = new System.Drawing.Point(222, 167);
             this.checkedListBox2.Name = "checkedListBox2";
-            this.checkedListBox2.Size = new System.Drawing.Size(185, 328);
+            this.checkedListBox2.Size = new System.Drawing.Size(269, 346);
             this.checkedListBox2.TabIndex = 18;
             // 
             // cmdGetSelectedProducts
             // 
-            this.cmdGetSelectedProducts.Location = new System.Drawing.Point(394, 151);
+            this.cmdGetSelectedProducts.Location = new System.Drawing.Point(491, 133);
             this.cmdGetSelectedProducts.Name = "cmdGetSelectedProducts";
             this.cmdGetSelectedProducts.Size = new System.Drawing.Size(270, 28);
             this.cmdGetSelectedProducts.TabIndex = 19;
@@ -167,7 +168,7 @@ namespace ProductsAPISampleGenerator
             // 
             this.rdoUkKey.AutoSize = true;
             this.rdoUkKey.Checked = true;
-            this.rdoUkKey.Location = new System.Drawing.Point(17, 31);
+            this.rdoUkKey.Location = new System.Drawing.Point(15, 24);
             this.rdoUkKey.Name = "rdoUkKey";
             this.rdoUkKey.Size = new System.Drawing.Size(102, 19);
             this.rdoUkKey.TabIndex = 0;
@@ -178,7 +179,7 @@ namespace ProductsAPISampleGenerator
             // rdoUsKey
             // 
             this.rdoUsKey.AutoSize = true;
-            this.rdoUsKey.Location = new System.Drawing.Point(17, 56);
+            this.rdoUsKey.Location = new System.Drawing.Point(15, 49);
             this.rdoUsKey.Name = "rdoUsKey";
             this.rdoUsKey.Size = new System.Drawing.Size(101, 19);
             this.rdoUsKey.TabIndex = 1;
@@ -187,7 +188,7 @@ namespace ProductsAPISampleGenerator
             // 
             // txtAqKeyValue
             // 
-            this.txtAqKeyValue.Location = new System.Drawing.Point(17, 104);
+            this.txtAqKeyValue.Location = new System.Drawing.Point(109, 73);
             this.txtAqKeyValue.Name = "txtAqKeyValue";
             this.txtAqKeyValue.Size = new System.Drawing.Size(225, 23);
             this.txtAqKeyValue.TabIndex = 6;
@@ -195,7 +196,7 @@ namespace ProductsAPISampleGenerator
             // rdoCustomKey
             // 
             this.rdoCustomKey.AutoSize = true;
-            this.rdoCustomKey.Location = new System.Drawing.Point(17, 81);
+            this.rdoCustomKey.Location = new System.Drawing.Point(15, 74);
             this.rdoCustomKey.Name = "rdoCustomKey";
             this.rdoCustomKey.Size = new System.Drawing.Size(88, 19);
             this.rdoCustomKey.TabIndex = 2;
@@ -210,7 +211,7 @@ namespace ProductsAPISampleGenerator
             this.groupBoxApiKeyType.Controls.Add(this.rdoUsKey);
             this.groupBoxApiKeyType.Location = new System.Drawing.Point(16, 12);
             this.groupBoxApiKeyType.Name = "groupBoxApiKeyType";
-            this.groupBoxApiKeyType.Size = new System.Drawing.Size(255, 133);
+            this.groupBoxApiKeyType.Size = new System.Drawing.Size(358, 114);
             this.groupBoxApiKeyType.TabIndex = 13;
             this.groupBoxApiKeyType.TabStop = false;
             this.groupBoxApiKeyType.Text = "1. Choose the API key to use";
@@ -220,9 +221,9 @@ namespace ProductsAPISampleGenerator
             this.groupBox1.Controls.Add(this.txtCustomProdIds);
             this.groupBox1.Controls.Add(this.cmdGetCustomProdIds);
             this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Location = new System.Drawing.Point(277, 12);
+            this.groupBox1.Location = new System.Drawing.Point(380, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(387, 133);
+            this.groupBox1.Size = new System.Drawing.Size(387, 114);
             this.groupBox1.TabIndex = 25;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Alternate: Build response from product Id List";
@@ -231,7 +232,7 @@ namespace ProductsAPISampleGenerator
             // 
             this.cmdUncheckMfrs.Location = new System.Drawing.Point(12, 520);
             this.cmdUncheckMfrs.Name = "cmdUncheckMfrs";
-            this.cmdUncheckMfrs.Size = new System.Drawing.Size(185, 22);
+            this.cmdUncheckMfrs.Size = new System.Drawing.Size(204, 22);
             this.cmdUncheckMfrs.TabIndex = 26;
             this.cmdUncheckMfrs.Text = "Uncheck all mfrs";
             this.cmdUncheckMfrs.UseVisualStyleBackColor = true;
@@ -239,19 +240,24 @@ namespace ProductsAPISampleGenerator
             // 
             // cmdUncheckProducts
             // 
-            this.cmdUncheckProducts.Location = new System.Drawing.Point(203, 520);
+            this.cmdUncheckProducts.Location = new System.Drawing.Point(222, 520);
             this.cmdUncheckProducts.Name = "cmdUncheckProducts";
-            this.cmdUncheckProducts.Size = new System.Drawing.Size(185, 22);
+            this.cmdUncheckProducts.Size = new System.Drawing.Size(269, 22);
             this.cmdUncheckProducts.TabIndex = 27;
             this.cmdUncheckProducts.Text = "Uncheck all products";
             this.cmdUncheckProducts.UseVisualStyleBackColor = true;
             this.cmdUncheckProducts.Click += new System.EventHandler(this.cmdUncheckProducts_Click);
             // 
+            // bgw_getMfrs
+            // 
+            this.bgw_getMfrs.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgw_getMfrs_DoWork);
+            this.bgw_getMfrs.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgw_getMfrs_RunWorkerCompleted);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(677, 554);
+            this.ClientSize = new System.Drawing.Size(778, 554);
             this.Controls.Add(this.cmdUncheckProducts);
             this.Controls.Add(this.cmdUncheckMfrs);
             this.Controls.Add(this.groupBox1);
@@ -295,6 +301,7 @@ namespace ProductsAPISampleGenerator
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button cmdUncheckMfrs;
         private System.Windows.Forms.Button cmdUncheckProducts;
+        private System.ComponentModel.BackgroundWorker bgw_getMfrs;
     }
 }
 
