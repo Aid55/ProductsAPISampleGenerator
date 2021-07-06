@@ -66,6 +66,7 @@ namespace ProductsAPISampleGenerator
 
     public partial class ProductPricing
     {
+        public long NetPrice { get; set; }
         public long ListPrice { get; set; }
         public bool IsCallPrice { get; set; }
         public long Markup { get; set; }
