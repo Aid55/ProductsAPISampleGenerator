@@ -43,7 +43,7 @@ namespace ProductsAPISampleGenerator
             }
             else
             {
-                return(rClient.MakeRequest(ClientConfig.apiKeyName, txtAqKeyValue.Text.ToString()));
+                return(rClient.MakeRequest(ClientConfig.apiKeyName, txtKeyValue.Text.ToString()));
             }
         }
 

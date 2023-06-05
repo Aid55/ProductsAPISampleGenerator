@@ -42,7 +42,7 @@ namespace ProductsAPISampleGenerator
             this.cmdGetSelectedProducts = new System.Windows.Forms.Button();
             this.rdoUkKey = new System.Windows.Forms.RadioButton();
             this.rdoUsKey = new System.Windows.Forms.RadioButton();
-            this.txtAqKeyValue = new System.Windows.Forms.TextBox();
+            this.txtKeyValue = new System.Windows.Forms.TextBox();
             this.rdoCustomKey = new System.Windows.Forms.RadioButton();
             this.groupBoxApiKeyType = new System.Windows.Forms.GroupBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -189,12 +189,12 @@ namespace ProductsAPISampleGenerator
             this.rdoUsKey.Text = "Default US key";
             this.rdoUsKey.UseVisualStyleBackColor = true;
             // 
-            // txtAqKeyValue
+            // txtKeyValue
             // 
-            this.txtAqKeyValue.Location = new System.Drawing.Point(109, 73);
-            this.txtAqKeyValue.Name = "txtAqKeyValue";
-            this.txtAqKeyValue.Size = new System.Drawing.Size(225, 23);
-            this.txtAqKeyValue.TabIndex = 6;
+            this.txtKeyValue.Location = new System.Drawing.Point(109, 73);
+            this.txtKeyValue.Name = "txtKeyValue";
+            this.txtKeyValue.Size = new System.Drawing.Size(225, 23);
+            this.txtKeyValue.TabIndex = 6;
             // 
             // rdoCustomKey
             // 
@@ -208,7 +208,7 @@ namespace ProductsAPISampleGenerator
             // 
             // groupBoxApiKeyType
             // 
-            this.groupBoxApiKeyType.Controls.Add(this.txtAqKeyValue);
+            this.groupBoxApiKeyType.Controls.Add(this.txtKeyValue);
             this.groupBoxApiKeyType.Controls.Add(this.rdoCustomKey);
             this.groupBoxApiKeyType.Controls.Add(this.rdoUkKey);
             this.groupBoxApiKeyType.Controls.Add(this.rdoUsKey);
@@ -313,7 +313,7 @@ namespace ProductsAPISampleGenerator
         private System.Windows.Forms.Button cmdGetSelectedProducts;
         private System.Windows.Forms.RadioButton rdoUkKey;
         private System.Windows.Forms.RadioButton rdoUsKey;
-        private System.Windows.Forms.TextBox txtAqKeyValue;
+        private System.Windows.Forms.TextBox txtKeyValue;
         private System.Windows.Forms.RadioButton rdoCustomKey;
         private System.Windows.Forms.GroupBox groupBoxApiKeyType;
         private System.Windows.Forms.GroupBox groupBox1;
